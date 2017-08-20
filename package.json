@@ -1,0 +1,42 @@
+{
+  "name": "state-router-svelte-todo",
+  "version": "1.0.0",
+  "private": false,
+  "description": "Todo-App with abstract-state-router, Svelte and TypeScript",
+  "scripts": {
+    "build": "webpack && copyfiles ./index.html ./dist",
+    "build:min": "SET NODE_ENV=production&& npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "live-server --cors --port=8083 --watch=./dist/bundle.js,./index.html dist",
+    "watch": "webpack -w",
+    "dev": "concurrently \"npm run watch\"  \"npm run serve\" "
+  },
+  "keywords": [],
+  "author": {
+    "name": "Kiho Chang",
+    "url": "https://github.com/kiho"
+  },
+  "license": "Apache-2.0",
+  "dependencies": {
+    "async-all": "^1.0.2",
+    "deepmerge": "^1.5.1",
+    "domready": "^1.0.8",
+    "random-uuid-v4": "0.0.6",
+    "svelte": "^1.30.0"
+  },
+  "devDependencies": {
+    "@types/requirejs": "^2.1.28",
+    "abstract-state-router": "^5.16.2",
+    "awesome-typescript-loader": "^3.2.3",
+    "concurrently": "^3.5.0",
+    "copyfiles": "^1.2.0",
+    "css-loader": "^0.28.1",
+    "live-server": "^1.2.0",
+    "svelte-loader": "^2.1.0",
+    "ts-loader": "^2.3.3",
+    "typescript": "^2.4.2",
+    "webpack": "^2.7.0",
+    "uglify-js": "git://github.com/mishoo/UglifyJS2#harmony-v2.8.22",
+    "uglifyjs-webpack-plugin": "0.4.4"
+  }
+}
