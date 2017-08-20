@@ -7,6 +7,12 @@ interface IRouteComponent extends Svelte {
 }
 
 interface IRouteContext {
+    element: HTMLElement,
+
+    template: typeof Svelte | { 
+        component: typeof Svelte, options: { methods: any } 
+    },
+
     domApi: IRouteComponent;
 
     parameters;

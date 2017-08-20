@@ -9,7 +9,7 @@ export default function (defaultOptions: { data?: any }) {
 			stateIsActive: stateRouter.stateIsActive
 		}
 
-		function render(context, cb) {
+		function render(context: IRouteContext, cb: (e, svt?: IRouteComponent) => void) {
 			const { element: target, template, content } = context
 
 			const rendererSuppliedOptions = merge(defaultOptions, {
@@ -26,6 +26,7 @@ export default function (defaultOptions: { data?: any }) {
 			let svelte: IRouteComponent
 
 			try {
+				// console.log('render() : typeof template', typeof template)
 				if (typeof template === 'function') {
 					svelte = construct(template, rendererSuppliedOptions)
 				} else {
@@ -71,7 +72,7 @@ export default function (defaultOptions: { data?: any }) {
 				svelte.destroy()
 				cb()
 			},
-			getChildElement: function getChildElement(svelte: IRouteComponent, cb) {
+			getChildElement: function getChildElement(svelte: IRouteComponent, cb:(e, elem?: HTMLElement) => void) {
 				try {
 					// const element = svelte.mountedToTarget
 					// const child = element.querySelector('uiView')
