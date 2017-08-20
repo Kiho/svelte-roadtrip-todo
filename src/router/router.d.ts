@@ -32,7 +32,7 @@ interface IStateRouter {
         defaultChild?: string,
         template: 
             typeof Svelte | { 
-            component: typeof Svelte, options: { methods: any } 
+            component: typeof Svelte, options: { methods?: any } 
         },
 		resolve?: (data, parameters, cb) => any,
 		activate?: (context: IRouteContext) => void

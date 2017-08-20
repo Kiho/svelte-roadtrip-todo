@@ -62,13 +62,13 @@ export default function (defaultOptions: { data?: any }) {
 
 		return {
 			render,
-			reset: function reset(context: IRouteContext, cb) {
+			reset: function reset(context: IRouteContext, cb: () => void) {
 				const svelte = context.domApi
 
 				svelte.asrReset(context.content)
 				cb()
 			},
-			destroy: function destroy(svelte: IRouteComponent, cb) {
+			destroy: function destroy(svelte: IRouteComponent, cb: () => void) {
 				svelte.destroy()
 				cb()
 			},
