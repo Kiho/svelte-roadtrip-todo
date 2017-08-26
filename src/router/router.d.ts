@@ -6,6 +6,10 @@ interface IRouteComponent extends Svelte {
     asrReset?: (newData: any) => void;
 }
 
+interface StringCollection {   
+    [name: string]: string;
+}
+
 interface IRouteContext {
     element: HTMLElement,
 
@@ -15,7 +19,7 @@ interface IRouteContext {
 
     domApi: IRouteComponent;
 
-    parameters;
+    parameters: StringCollection;
 
     content;
 
@@ -34,7 +38,7 @@ interface IStateRouter {
             typeof Svelte | { 
             component: typeof Svelte, options: { methods?: any } 
         },
-		resolve?: (data, parameters, cb) => any,
+		resolve?: (data, parameters: StringCollection, cb) => any,
 		activate?: (context: IRouteContext) => void
     }) => void;
 
