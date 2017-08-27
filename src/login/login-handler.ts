@@ -13,6 +13,10 @@ export default class LoginHandler {
     get route() {
         return {
             enter: (current, previous) => { 
+                if (previous.destory) {
+                    previous.destory();
+                    previous.destory = null;
+                }
                 this.component = new Component({
                     target: document.querySelector(this.target),
                 });   

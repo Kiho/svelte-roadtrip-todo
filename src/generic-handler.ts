@@ -8,7 +8,9 @@ export default class GenericHandler {
     
     public component;
 
-    constructor(private ctor, protected target) {
+    target = 'uiView';
+
+    constructor(private ctor, public parent) {
         this.beforeEnter = this.beforeEnter.bind(this);
         this.enter = this.enter.bind(this);
         this.leave = this.leave.bind(this);
@@ -39,13 +41,16 @@ export default class GenericHandler {
     protected destory() {
         if (this.component) {
             this.component.destroy();
+            this.component = null;
         }
     }
 
     protected enter(current, previous) {
-        if (this.target === 'uiView') {
-			this.create();
-		}
+        if (previous.destory) {
+            previous.destory();
+            previous.destory = null;
+        }
+        this.create();
         console.log('Entered!', current); 
         if (roadtrip.Routing.notify) {
             roadtrip.Routing.notify(current); 
@@ -55,8 +60,7 @@ export default class GenericHandler {
     }
 
     protected leave(current, previous) {
-        this.destory();
-        this.component = null;
+        current.destory = this.destory;
         console.log('Left!', current);  
     }
 

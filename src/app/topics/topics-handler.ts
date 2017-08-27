@@ -2,9 +2,8 @@ import all from 'async-all'
 import Component from './topics.html'
 import roadtrip from 'roadtrip';
 import GenericHandler from '../../generic-handler';
+import AppChildHandler from '../app-child-handler';
 // import Tasks from './tasks/tasks'
-
-declare var process;
 
 const model = require('../../../modules/model.js')
 
@@ -12,17 +11,39 @@ function getTopicsSync() {
 	return JSON.parse(localStorage.getItem('topics'))
 }
 
-export default class TopicsHandler extends GenericHandler {
-    constructor(target) {
-		super(Component, target);
+export default class TopicsHandler extends AppChildHandler {
+    constructor(parent) {
+		super(Component, parent);
 	}
 	
-	// protected async beforeEnter(route) {
-	// }
-
  	protected activate(component) {
 		const topics = getTopicsSync();
 		component.set({ topics: topics });
+
+		component.on('add-topic', function() {
+			const addingTopic = component.get('addingTopic')
+			const newTopicName = component.get('newTopic')
+
+			if (addingTopic && newTopicName) {
+				const newTopic = model.addTopic(newTopicName)
+
+				component.set({
+					topics: component.get('topics').concat(newTopic),
+					newTopic: ''
+				})
+
+				// recalculateTasksLeftToDoInTopic(newTopic.id)
+				roadtrip.goto('/app/topics/tasks', {
+					topicId: newTopic.id
+				})
+			} else if (!addingTopic) {
+				// setFocusOnAddTopicEdit()
+			}
+
+			component.set({
+				addingTopic: !addingTopic
+			})
+		})
 	}
 
 	protected enter(current, previous) {
@@ -30,6 +51,7 @@ export default class TopicsHandler extends GenericHandler {
 		this.activate(this.component);
     }
 }
+
 // export default function(stateRouter) {
 // 	stateRouter.addState({
 // 		name: 'app.topics',
@@ -43,12 +65,12 @@ export default class TopicsHandler extends GenericHandler {
 // 			}, cb)
 // 		},
 // 		activate: function(context) {
-// 			const svelte = context.domApi
+// 			const component = context.domApi
 
 // 			function setFocusOnAddTopicEdit() {
 // 				process.nextTick(function() {
-// 					svelte.findElement('.new-topic-name').focus()
-// 					// (<HTMLElement>svelte.mountedToTarget.querySelector('.new-topic-name')).focus()
+// 					component.findElement('.new-topic-name').focus()
+// 					// (<HTMLElement>component.mountedToTarget.querySelector('.new-topic-name')).focus()
 // 				})
 // 			}
 
@@ -58,8 +80,8 @@ export default class TopicsHandler extends GenericHandler {
 // 						return toDo + (task.done ? 0 : 1)
 // 					}, 0)
 
-// 					svelte.set({
-// 						tasksUndone: Object.assign({}, svelte.get('tasksUndone'), {
+// 					component.set({
+// 						tasksUndone: Object.assign({}, component.get('tasksUndone'), {
 // 							[topicId]: leftToDo
 // 						})
 // 					})
@@ -72,15 +94,15 @@ export default class TopicsHandler extends GenericHandler {
 // 				recalculateTasksLeftToDoInTopic(topic.id)
 // 			})
 
-// 			svelte.on('add-topic', function() {
-// 				const addingTopic = svelte.get('addingTopic')
-// 				const newTopicName = svelte.get('newTopic')
+// 			component.on('add-topic', function() {
+// 				const addingTopic = component.get('addingTopic')
+// 				const newTopicName = component.get('newTopic')
 
 // 				if (addingTopic && newTopicName) {
 // 					const newTopic = model.addTopic(newTopicName)
 
-// 					svelte.set({
-// 						topics: svelte.get('topics').concat(newTopic),
+// 					component.set({
+// 						topics: component.get('topics').concat(newTopic),
 // 						newTopic: ''
 // 					})
 
@@ -92,7 +114,7 @@ export default class TopicsHandler extends GenericHandler {
 // 					setFocusOnAddTopicEdit()
 // 				}
 
-// 				svelte.set({
+// 				component.set({
 // 					addingTopic: !addingTopic
 // 				})
 
