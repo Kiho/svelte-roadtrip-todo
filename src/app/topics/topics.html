@@ -3,12 +3,15 @@
 		<div class="col-sm-4">
 			<div class="list-group">
 				{{#each topics as topic}}
-					<a
+					<RouterLink to="/login" location={{currentPath}} calssName="list-group-item" >
+						{{topic.name}} <span class="badge">{{ tasksUndone[topic.id] }}</span>
+					</RouterLink> 
+					<!-- <a
 						href="{{ asr.makePath('app.topics.tasks', { topicId: topic.id }) }}"
 						class="list-group-item {{ asr.stateIsActive('app.topics.tasks', { topicId: topic.id }) ? 'active' : '' }}"
 					>
 						{{topic.name}} <span class="badge">{{ tasksUndone[topic.id] }}</span>
-					</a>
+					</a> -->
 				{{/each}}
 			</div>
 			<form action="" onsubmit="return false" on:submit="fire('add-topic', event)">
@@ -37,14 +40,21 @@
 	</div>
 </div>
 <script>
-export default {
-	helpers: {
-		hiddenIfNot: x => x ? '' : 'hidden'
-	},
-	data: () => ({
-		tasksUndone: {},
-		addingTopic: false,
-		newTopic: ''
-	})
-}
+	import RouterLink from '../../components/router-link.html';
+
+	export default {
+		components: {
+            RouterLink
+        },
+		helpers: {
+			hiddenIfNot: x => x ? '' : 'hidden'
+		},
+		data: () => ({
+			topics: [],
+			tasksUndone: {},
+			addingTopic: false,
+			newTopic: '',
+			currentPath: '',
+		})
+	}
 </script>

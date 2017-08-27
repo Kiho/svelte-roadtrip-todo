@@ -1,18 +1,18 @@
+/*
+ * This is the entrypoint of all the JavaScript files.
+ */
 
-import SvelteRenderer from './router/svelte-state-renderer'
-import StateRouter from 'abstract-state-router'
-import domready from 'domready'
+// import Svelte from 'svelte';
+// import App from './components/app/app.html';
 
-import Login from './login/login'
-import App from './app/app'
+// const app: Svelte = new App({
+//     target: document.querySelector('#app-root'),
+// });
 
-domready(function() {
-	const stateRouter = StateRouter(SvelteRenderer({}), document.querySelector('body'))
+import Routes from './routes';
 
-	stateRouter.setMaxListeners(20)
+document.addEventListener('DOMContentLoaded', main);
 
-	Login(stateRouter)
-	App(stateRouter)
-
-	stateRouter.evaluateCurrentRoute('login')
-})
+function main () {
+  (window as any).Routes = new Routes('#app-root');
+}

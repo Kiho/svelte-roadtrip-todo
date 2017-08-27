@@ -1,0 +1,43 @@
+<a href='{{basePath}}{{ to }}' class="{{ calssName + ' ' + active}}" on:click='navigate(event, to)'>
+    {{ yield }}
+</a>
+
+<script>
+    import roadtrip from 'roadtrip';
+
+    const activedClassName = 'router-link-active'
+    
+    export default {
+        data () {
+            return {
+              to: '/',
+              basePath: '',
+              active: '',
+              location: '',
+              calssName: '',
+            }
+        },
+        oncreate () {    
+            this.observe('location', location => {
+                // console.log(location);
+                this.setActivedClass(location);
+            });
+        },
+        methods: {
+            navigate ($e, to) {
+                if ($e && $e.preventDefault) $e.preventDefault()
+                // console.log('roadtrip.RouteData', roadtrip.RouteData);          
+                if (to) {            
+                    roadtrip.goto(to);
+                }
+            },
+            setActivedClass (location) {
+                if (location === this.get('to')) {
+                    this.set({ active: activedClassName })
+                } else {
+                    this.set({ active: '' })
+                }
+            }
+        }
+    }
+</script>

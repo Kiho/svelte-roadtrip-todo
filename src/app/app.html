@@ -2,23 +2,52 @@
 	<div class="container-fluid">
 		<div class="navbar-header">
 			<ul class="nav navbar-nav">
-				<li class="{{ asr.stateIsActive('app.topics') ? 'active' : '' }}">
-					<a href="{{ asr.makePath('app.topics') }}">Basic todo app!</a>
-				</li>
-				<li class="{{ asr.stateIsActive('app.about') ? 'active' : '' }}">
-					<a href="{{ asr.makePath('app.about') }}">About the state router</a>
+				<li>
+					<RouterLink to="/" location={{currentPath}} class="router-link-exact-active router-link-active">
+						<span class="glyphicon glyphicon-home"></span> Basic todo app!
+					</RouterLink>    
 				</li>
 				<li>
-					<a href="{{ asr.makePath('login') }}" on:click="fire('logout', event)">"Log out"</a>
+					<RouterLink to="/app/about" location={{currentPath}} >
+						<span class="glyphicon glyphicon-education"></span> About the Svelte
+					</RouterLink>     
+				</li>
+				<li>
+					<RouterLink to="/login" location={{currentPath}}  on:click="fire('logout', event)">
+						<span class="glyphicon glyphicon-th-list"></span> Log out
+					</RouterLink> 
 				</li>
 			</ul>
 		</div>
 		<div class="nav navbar-right">
 			<p class="navbar-text">
-				Logged in as {{currentUser.name}}
+				Logged in as {{currentUser}}
 			</p>
 		</div>
 	</div>
 </nav>
 
 <uiView></uiView>
+
+<script>
+    import RouterLink from '../components/router-link.html';
+    import roadtrip from 'roadtrip';
+
+    export default {
+        data () {
+			return {
+				currentPath: '',
+			}
+		},
+        components: {
+            RouterLink
+        },
+        oncreate () {
+            roadtrip.Routing.notify = routeData => {                
+                const path = routeData ? routeData.pathname : '';
+                this.set({currentPath: '/' + path});
+                console.log('App : routeData', routeData, path);
+            };
+      },
+    }
+</script>

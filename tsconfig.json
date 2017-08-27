@@ -7,7 +7,13 @@
     "declaration": false,
     "sourceMap": true,
     "skipDefaultLibCheck": true,
-    "types": ["requirejs"]
+    "types": ["requirejs"],
+    "lib": [
+      "dom",
+      "es5",
+      "es2015",
+      "es2015.promise"
+    ]
   },
   "exclude": [
     "node_modules",
