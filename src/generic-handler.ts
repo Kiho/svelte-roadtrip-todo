@@ -4,26 +4,48 @@ const model = require('../modules/model.js');
 roadtrip.Routing ={}
 
 export default class GenericHandler {
+    public app;
+    
     public component;
 
     constructor(private ctor, protected target) {
         this.beforeEnter = this.beforeEnter.bind(this);
         this.enter = this.enter.bind(this);
         this.leave = this.leave.bind(this);
+        this.create = this.create.bind(this);
+        this.destory = this.destory.bind(this);
+    }
+
+    protected isLoggedIn() {
+        const currentUser = model.getCurrentUser()                
+        return (currentUser && currentUser.name);
     }
 
     protected beforeEnter(current, previous) {
-        const currentUser = model.getCurrentUser()
-        console.warn('beforeEnter', currentUser, current, previous);                
-        if (!currentUser || (currentUser && !currentUser.name)) {
+        console.warn('beforeEnter', current, previous);                
+        if (!this.isLoggedIn()) {
             roadtrip.goto('/login')
         }
     }
 
+    protected create() {
+        if (!this.component) {
+            this.component = new this.ctor({
+                target: document.querySelector(this.target),
+            }); 
+        }
+    }
+
+    protected destory() {
+        if (this.component) {
+            this.component.destroy();
+        }
+    }
+
     protected enter(current, previous) {
-        this.component = new this.ctor({
-            target: document.querySelector(this.target),
-        });   
+        if (this.target === 'uiView') {
+			this.create();
+		}
         console.log('Entered!', current); 
         if (roadtrip.Routing.notify) {
             roadtrip.Routing.notify(current); 
@@ -33,7 +55,8 @@ export default class GenericHandler {
     }
 
     protected leave(current, previous) {
-        this.component.destroy();
+        this.destory();
+        this.component = null;
         console.log('Left!', current);  
     }
 

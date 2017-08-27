@@ -29,6 +29,10 @@
                 // console.log('roadtrip.RouteData', roadtrip.RouteData);          
                 if (to) {            
                     roadtrip.goto(to);
+                } else {
+                    this.fire('logout', {
+                        thing: 'this event was fired'
+                    });
                 }
             },
             setActivedClass (location) {

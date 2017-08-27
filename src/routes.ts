@@ -25,8 +25,8 @@ export default class Routes {
     init(target) {
         this.loginHandler = new LoginHandler(target);
         this.appHandler = new AppHandler(target);
-        this.aboutHandler = new GenericHandler(About, target);
-        this.topicsHandler = new TopicsHandler(target);
+        this.aboutHandler = new AppHandler('uiView', About);
+        this.topicsHandler = new TopicsHandler('uiView');
 
         this.router
             .add('/', this.appHandler.route)

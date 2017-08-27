@@ -22,7 +22,7 @@ export default class TopicsHandler extends GenericHandler {
 
  	protected activate(component) {
 		const topics = getTopicsSync();
-		this.component.set({ topics: topics });
+		component.set({ topics: topics });
 	}
 
 	protected enter(current, previous) {

@@ -21,7 +21,7 @@ export default class LoginHandler {
 					const username = this.component.get('username');
 					if (username) {
 						model.saveCurrentUser(username);
-                        roadtrip.goto('/app/about');
+                        roadtrip.goto('/');
                         return true;
 					}
 					return false;
