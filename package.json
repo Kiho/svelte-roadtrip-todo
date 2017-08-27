@@ -7,7 +7,7 @@
     "build": "webpack && copyfiles ./index.html ./dist",
     "build:min": "SET NODE_ENV=production&& npm run build",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "serve": "live-server --cors --port=8083 --watch=./dist/bundle.js,./index.html dist",
+    "serve": "live-server --cors --port=8084 --watch=./dist/bundle.js,./index.html dist",
     "watch": "webpack -w",
     "dev": "concurrently \"npm run watch\"  \"npm run serve\" "
   },
