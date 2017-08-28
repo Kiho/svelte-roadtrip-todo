@@ -10,35 +10,45 @@ export default class GenericHandler {
 
     target = 'uiView';
 
-    constructor(private ctor, public parent) {
+    constructor(private ctor, public parent, protected options?) {
         this.beforeEnter = this.beforeEnter.bind(this);
         this.enter = this.enter.bind(this);
         this.leave = this.leave.bind(this);
         this.create = this.create.bind(this);
-        this.destory = this.destory.bind(this);
+        this.destroy = this.destroy.bind(this);
+    }
+
+    private destroyPrevious  = (current, previous) => {
+        if (current && previous && previous.destroy) {
+            if(current.pathname.indexOf(previous.pathname) === -1) {
+                previous.destroy();
+            }
+        }
     }
 
     protected isLoggedIn() {
-        const currentUser = model.getCurrentUser()                
+        const currentUser = model.getCurrentUser();             
         return (currentUser && currentUser.name);
     }
 
     protected beforeEnter(current, previous) {
         console.warn('beforeEnter', current, previous);                
         if (!this.isLoggedIn()) {
-            roadtrip.goto('/login')
+            roadtrip.goto('/login');
         }
     }
 
-    protected create() {
+    protected create(options) {
         if (!this.component) {
             this.component = new this.ctor({
                 target: document.querySelector(this.target),
-            }); 
+            }, options); 
+        } else {
+            this.component.set(options);
         }
     }
 
-    protected destory() {
+    protected destroy() {
         if (this.component) {
             this.component.destroy();
             this.component = null;
@@ -46,11 +56,9 @@ export default class GenericHandler {
     }
 
     protected enter(current, previous) {
-        if (previous.destory) {
-            previous.destory();
-            previous.destory = null;
-        }
-        this.create();
+        const options = roadtrip.options;
+        this.destroyPrevious(current, previous);
+        this.create(options);
         console.log('Entered!', current); 
         if (roadtrip.Routing.notify) {
             roadtrip.Routing.notify(current); 
@@ -60,7 +68,7 @@ export default class GenericHandler {
     }
 
     protected leave(current, previous) {
-        current.destory = this.destory;
+        current.destroy = this.destroy;
         console.log('Left!', current);  
     }
 

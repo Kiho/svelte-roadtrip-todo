@@ -40,7 +40,7 @@ export default class Routes {
             .add('/login', this.loginHandler.route)
             .add('/app/about', this.aboutHandler.route)
             .add('/app/topics', this.topicsHandler.route)
-            .add('/app/topics/:topicId(' + UUID_V4_REGEX + ')', this.tasksHandler.route)
+            .add('/app/topics/:topicId', this.tasksHandler.route)
             .start({
                 fallback: '/'
             });

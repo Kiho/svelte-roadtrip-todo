@@ -12,13 +12,21 @@ export default class AppHandler {
         this.enter = this.enter.bind(this);
         this.leave = this.leave.bind(this);
         // this.create = this.create.bind(this);
-        // this.destory = this.destory.bind(this);
+        // this.destroy = this.destroy.bind(this);
 	}
 	
 	protected isLoggedIn() {
         const currentUser = model.getCurrentUser()                
         return (currentUser && currentUser.name);
 	}
+
+	private destroyPrevious  = (current, previous) => {
+        if (current && previous && previous.destroy) {
+            if(current.pathname.indexOf(previous.pathname) === -1) {
+                previous.destroy();
+            }
+        }
+    }
 	
 	protected beforeEnter(current, previous) {
 		if (!this.isLoggedIn()) {
@@ -46,7 +54,7 @@ export default class AppHandler {
         }
 	}
 	
-	public destoryApp  = () => {
+	public destroyApp  = () => {
         if (this.app) {
 			this.app.destroy();
 			this.app = null;
@@ -54,12 +62,13 @@ export default class AppHandler {
 	}
 
 	protected enter(current, previous) {
+		this.destroyPrevious(current, previous);
 		this.createApp();
 		console.log('Entered App!', current);
 	}
 
 	protected leave(current, previous) {
-        this.destoryApp();
+        this.destroyApp();
         console.log('Left App!', current);  
     }
 

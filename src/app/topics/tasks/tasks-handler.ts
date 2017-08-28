@@ -5,18 +5,64 @@ import AppChildHandler from '../../app-child-handler';
 
 const model = require('../../../../modules/model.js')
 const all = require('async-all')
+import roadtrip from 'roadtrip';
 
-const UUID_V4_REGEX = '[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}'
+// const UUID_V4_REGEX = '[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}'
 
 export default class TasksHandler extends AppChildHandler {
     constructor(parent) {
 		super(Component, parent);
 	}
-	
+
+    protected beforeEnter(current, previous) {
+        super.beforeEnter(current, previous);                
+        if (this.isLoggedIn()) {
+            const topicId = current.params.topicId;
+            console.log('beforeEnter - topicId', topicId);
+            const topic = model.getTopic.bind(null, topicId);
+            const tasks = model.getTasks.bind(null, topicId);
+            roadtrip.options = { topicId, topic, tasks };
+        }
+    }
+
  	protected activate(component) {
-		// const topics = getTopicsSync();
-		// component.set({ topics: topics });
-	}
+        const topicId = component.get('topicId');
+        console.log('activate - topicId', topicId);
+
+        component.on('newTaskKeyup', function(e) {
+            const newTaskName = component.get('newTaskName')
+            if (e.keyCode === 13 && newTaskName) {
+                createNewTask(newTaskName)
+                component.set({
+                    newTaskName: ''
+                })
+            }
+        })
+
+        component.on('remove', function(taskIndex) {
+            const topicId = component.get('topicId')
+            let tasksWithIndexElementRemoved = component.get('tasks').slice()
+
+            tasksWithIndexElementRemoved.splice(taskIndex, 1)
+            console.log('tasksWithIndexElementRemoved', topicId, tasksWithIndexElementRemoved)
+
+            component.set({
+                tasks: tasksWithIndexElementRemoved
+            })
+
+            model.saveTasks(topicId, tasksWithIndexElementRemoved)
+        })
+
+        function createNewTask(taskName) {
+            const task = model.saveTask(topicId, taskName)
+            const newTasks = component.get('tasks').concat(task)
+            component.set({
+                tasks: newTasks
+            })
+        }
+
+        // component.findElement('.add-new-task').focus()
+    }
 
 	protected enter(current, previous) {
 		super.enter(current, previous);
@@ -52,27 +98,27 @@ export default class TasksHandler extends AppChildHandler {
 // 			}, cb)
 // 		},
 // 		activate: function(context) {
-// 			const svelte = context.domApi
+// 			const component = context.domApi
 // 			const topicId = context.parameters.topicId
 // 			console.log('activate - topicId', topicId)
-// 			svelte.on('newTaskKeyup', function(e) {
-// 				const newTaskName = svelte.get('newTaskName')
+// 			component.on('newTaskKeyup', function(e) {
+// 				const newTaskName = component.get('newTaskName')
 // 				if (e.keyCode === 13 && newTaskName) {
 // 					createNewTask(newTaskName)
-// 					svelte.set({
+// 					component.set({
 // 						newTaskName: ''
 // 					})
 // 				}
 // 			})
 
-// 			svelte.on('remove', function(taskIndex) {
-// 				const topicId = svelte.get('topicId')
-// 				let tasksWithIndexElementRemoved = svelte.get('tasks').slice()
+// 			component.on('remove', function(taskIndex) {
+// 				const topicId = component.get('topicId')
+// 				let tasksWithIndexElementRemoved = component.get('tasks').slice()
 
 // 				tasksWithIndexElementRemoved.splice(taskIndex, 1)
 // 				console.log('tasksWithIndexElementRemoved', topicId, tasksWithIndexElementRemoved)
 
-// 				svelte.set({
+// 				component.set({
 // 					tasks: tasksWithIndexElementRemoved
 // 				})
 
@@ -80,18 +126,18 @@ export default class TasksHandler extends AppChildHandler {
 // 			})
 
 // 			function createNewTask(taskName) {
-// 				// const parentTopicId = svelte.get('topicId')
+// 				// const parentTopicId = component.get('topicId')
 // 				//console.log('topicId', topicId, 'parentTopicId', parentTopicId)				
 // 				// console.log('context.parameters.topicId', context.parameters.topicId)
 // 				const task = model.saveTask(topicId, taskName)
-// 				const newTasks = svelte.get('tasks').concat(task)
-// 				svelte.set({
+// 				const newTasks = component.get('tasks').concat(task)
+// 				component.set({
 // 					tasks: newTasks
 // 				})
 // 			}
 
-// 			svelte.findElement('.add-new-task').focus()
-// 			// (<HTMLElement>svelte.mountedToTarget.querySelector('.add-new-task')).focus()
+// 			component.findElement('.add-new-task').focus()
+// 			// (<HTMLElement>component.mountedToTarget.querySelector('.add-new-task')).focus()
 // 		}
 // 	})
 
