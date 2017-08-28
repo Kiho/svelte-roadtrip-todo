@@ -9,24 +9,39 @@ import roadtrip from 'roadtrip';
 
 // const UUID_V4_REGEX = '[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}'
 
+const allWithAsync = (...listOfPromises) => {
+    return new Promise(async (resolve, reject) => {
+        let results = []
+        for (let promise of listOfPromises.map(Promise.resolve, Promise)) {
+            results.push(await promise.then(async resolvedData => await resolvedData, reject))
+            if (results.length === listOfPromises.length) resolve(results)
+        }
+    })
+};
+
 export default class TasksHandler extends AppChildHandler {
     constructor(parent) {
-		super(Component, parent);
+        super(Component, parent);
+
+        this.target = 'uiView1';
 	}
 
     protected beforeEnter(current, previous) {
         super.beforeEnter(current, previous);                
         if (this.isLoggedIn()) {
             const topicId = current.params.topicId;
-            console.log('beforeEnter - topicId', topicId);
-            const topic = model.getTopic.bind(null, topicId);
-            const tasks = model.getTasks.bind(null, topicId);
-            roadtrip.options = { topicId, topic, tasks };
+            const topic = model.getTopicSync.bind(null, topicId);
+            const tasks = model.getTasksSync.bind(null, topicId);
+            // const promises = [
+            //     new Promise(resolve => resolve(topic)),
+            //     new Promise(resolve => resolve(tasks)),
+            // ];
+            roadtrip.data = allWithAsync(topic(), tasks());
         }
     }
 
- 	protected activate(component) {
-        const topicId = component.get('topicId');
+ 	protected activate(component, current) {
+        const topicId = current.params.topicId; 
         console.log('activate - topicId', topicId);
 
         component.on('newTaskKeyup', function(e) {
@@ -65,8 +80,15 @@ export default class TasksHandler extends AppChildHandler {
     }
 
 	protected enter(current, previous) {
+        const self = this;
 		super.enter(current, previous);
-		this.activate(this.component);
+        if (roadtrip.data.then) {
+            return roadtrip.data.then(data => {
+                console.log('resolvedData', data) // will not run since we have a rejection!
+                this.component.set({ topic: data[0], tasks: data[1] });
+            }, rejectionReason => console.log('reason:', rejectionReason)) // reason: rejected!
+        }
+		this.activate(this.component, current);
     }
 }
 

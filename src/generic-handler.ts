@@ -8,7 +8,7 @@ export default class GenericHandler {
     
     public component;
 
-    target = 'uiView';
+    protected target = 'uiView';
 
     constructor(private ctor, public parent, protected options?) {
         this.beforeEnter = this.beforeEnter.bind(this);
@@ -56,9 +56,8 @@ export default class GenericHandler {
     }
 
     protected enter(current, previous) {
-        const options = roadtrip.options;
         this.destroyPrevious(current, previous);
-        this.create(options);
+        this.create({});
         console.log('Entered!', current); 
         if (roadtrip.Routing.notify) {
             roadtrip.Routing.notify(current); 

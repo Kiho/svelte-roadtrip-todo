@@ -18,6 +18,9 @@ emitter.getCurrentUser = getCurrentUser
 emitter.saveCurrentUser = saveCurrentUser
 emitter.saveTask = saveTask
 
+emitter.getTopicSync = getTopicSync
+emitter.getTasksSync = getTasksSync
+
 function getTopics(cb) {
 	setTimeout(function() {
 		cb(null, getTopicsSync())
