@@ -1,7 +1,17 @@
 import roadtrip from 'roadtrip';
 const model = require('../modules/model.js');
 
-roadtrip.Routing ={}
+roadtrip.Routing = {}
+
+function construct(component, options) {
+    return options.methods
+        ? instantiateWithMethods(component, options, options.methods)
+        : new component(options)
+}
+
+function instantiateWithMethods(component, options, methods) {
+	return Object.assign(new component(options), methods)
+}
 
 export default class GenericHandler {
     public app;
@@ -10,7 +20,7 @@ export default class GenericHandler {
 
     protected target = 'uiView';
 
-    constructor(private ctor, public parent, protected options?) {
+    constructor(private ctor, public parent, protected options = {}) {
         this.beforeEnter = this.beforeEnter.bind(this);
         this.enter = this.enter.bind(this);
         this.leave = this.leave.bind(this);
@@ -40,9 +50,8 @@ export default class GenericHandler {
 
     protected create(options) {
         if (!this.component) {
-            this.component = new this.ctor({
-                target: document.querySelector(this.target),
-            }, options); 
+            options.target = document.querySelector(this.target);
+            this.component = construct(this.ctor, options);
         } else {
             this.component.set(options);
         }
@@ -57,7 +66,7 @@ export default class GenericHandler {
 
     protected enter(current, previous) {
         this.destroyPrevious(current, previous);
-        this.create({});
+        this.create(this.options);
         console.log('Entered!', current); 
         if (roadtrip.Routing.notify) {
             roadtrip.Routing.notify(current); 

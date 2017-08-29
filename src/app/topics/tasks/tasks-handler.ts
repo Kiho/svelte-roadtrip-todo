@@ -20,9 +20,22 @@ const allWithAsync = (...listOfPromises) => {
 };
 
 export default class TasksHandler extends AppChildHandler {
-    constructor(parent) {
-        super(Component, parent);
 
+    constructor(parent) {
+        const options = {
+            methods: {
+                setTaskDone: function(index, done) {
+                    const topicId = this.get('topicId')
+                    const tasks = this.get('tasks').slice()
+                    tasks[index].done = done
+
+                    this.set({ tasks })
+
+                    model.saveTasks(topicId, tasks)
+                }
+            }
+        }
+        super(Component, parent, options);
         this.target = 'uiView1';
 	}
 
@@ -86,9 +99,9 @@ export default class TasksHandler extends AppChildHandler {
             return roadtrip.data.then(data => {
                 console.log('resolvedData', data) // will not run since we have a rejection!
                 this.component.set({ topic: data[0], tasks: data[1] });
+                this.activate(this.component, current);
             }, rejectionReason => console.log('reason:', rejectionReason)) // reason: rejected!
         }
-		this.activate(this.component, current);
     }
 }
 

@@ -8,7 +8,7 @@ export default class AppChildHandler extends GenericHandler {
     createApp;
 
     constructor(child, parent, options?) {
-        super(child, parent);
+        super(child, parent, options);
         this.createApp = this.create;
 	}
 	
