@@ -46,6 +46,7 @@ export default class AppHandler {
 	}
 
 	public createApp = () => {
+		console.log('createApp', this.app);
         if (!this.app) {
             this.app = new Component({
                 target: document.querySelector("#app-root"),
@@ -55,6 +56,7 @@ export default class AppHandler {
 	}
 	
 	public destroyApp  = () => {
+		console.log('destroyApp', this.app);
         if (this.app) {
 			this.app.destroy();
 			this.app = null;
@@ -68,7 +70,7 @@ export default class AppHandler {
 	}
 
 	protected leave(current, previous) {
-        this.destroyApp();
+        // this.destroyApp();
         console.log('Left App!', current);  
     }
 

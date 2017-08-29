@@ -45,7 +45,7 @@ export default class TasksHandler extends AppChildHandler {
             const topicId = current.params.topicId;
             const topic = model.getTopicAsync.bind(null, topicId);
             const tasks = model.getTasksAsync.bind(null, topicId);
-            roadtrip.data = allWithAsync(topic(), tasks());
+            roadtrip.data = allWithAsync(topic(), tasks(), topicId);
         }
     }
 

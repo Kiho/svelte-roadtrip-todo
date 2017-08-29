@@ -30,7 +30,8 @@ export default class GenericHandler {
 
     private destroyPrevious  = (current, previous) => {
         if (current && previous && previous.destroy) {
-            if(current.pathname.indexOf(previous.pathname) === -1) {
+            if(current.pathname.indexOf(previous.pathname) === -1 && 
+                current.handler !== previous.handler) {
                 previous.destroy();
             }
         }
@@ -52,6 +53,7 @@ export default class GenericHandler {
         if (!this.component) {
             options.target = document.querySelector(this.target);
             this.component = construct(this.ctor, options);
+            console.warn('create', this.component); 
         } else {
             this.component.set(options);
         }
@@ -59,12 +61,14 @@ export default class GenericHandler {
 
     protected destroy() {
         if (this.component) {
+            console.warn('destroy', this.component); 
             this.component.destroy();
             this.component = null;
         }
     }
 
     protected enter(current, previous) {
+        current.handler = this;
         this.destroyPrevious(current, previous);
         this.create(this.options);
         console.log('Entered!', current); 
