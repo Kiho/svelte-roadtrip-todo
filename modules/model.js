@@ -18,8 +18,16 @@ emitter.getCurrentUser = getCurrentUser
 emitter.saveCurrentUser = saveCurrentUser
 emitter.saveTask = saveTask
 
-emitter.getTopicSync = getTopicSync
-emitter.getTasksSync = getTasksSync
+emitter.getTopicAsync = getTopicAsync
+emitter.getTasksAsync = getTasksAsync
+
+function getTopicAsync(topicId) {
+	return new Promise((resolve, reject) => setTimeout(resolve, artificialDelay, getTopicSync(topicId)))
+}
+
+function getTasksAsync(topicId) {
+	return new Promise((resolve, reject) => setTimeout(resolve, artificialDelay, getTasksSync(topicId)))
+}
 
 function getTopics(cb) {
 	setTimeout(function() {

@@ -43,12 +43,8 @@ export default class TasksHandler extends AppChildHandler {
         super.beforeEnter(current, previous);                
         if (this.isLoggedIn()) {
             const topicId = current.params.topicId;
-            const topic = model.getTopicSync.bind(null, topicId);
-            const tasks = model.getTasksSync.bind(null, topicId);
-            // const promises = [
-            //     new Promise(resolve => resolve(topic)),
-            //     new Promise(resolve => resolve(tasks)),
-            // ];
+            const topic = model.getTopicAsync.bind(null, topicId);
+            const tasks = model.getTasksAsync.bind(null, topicId);
             roadtrip.data = allWithAsync(topic(), tasks());
         }
     }
