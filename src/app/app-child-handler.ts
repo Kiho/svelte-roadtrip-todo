@@ -5,11 +5,11 @@ import GenericHandler from '../generic-handler';
 const model = require('../../modules/model.js');
 
 export default class AppChildHandler extends GenericHandler {
-    createApp;
+    // createApp;
 
-    constructor(child, parent, options?) {
-        super(child, parent, options);
-        this.createApp = this.create;
+    constructor(path, child, parent, options?) {
+        super(path, child, parent, options);
+        // this.createApp = this.create;
 	}
 	
 	protected beforeEnter(current, previous) {
@@ -21,7 +21,7 @@ export default class AppChildHandler extends GenericHandler {
 	}	
     
 	protected enter(current, previous) {
-		this.parent.createApp(this.options);
+		this.parent.create(this.options);
 		super.enter(current, previous);
 	}
 }

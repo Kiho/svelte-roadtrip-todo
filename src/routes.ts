@@ -12,10 +12,12 @@ import About from './app/about/about.html';
 import Topics from './app/topics/topics.html';
 import Tasks from './app/topics/tasks/tasks.html';
 
-const UUID_V4_REGEX = '[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}'
+// const UUID_V4_REGEX = '[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}'
 
 export default class Routes {
     router;
+
+    handlers;
 
     loginHandler;
     appHandler;
@@ -28,21 +30,20 @@ export default class Routes {
         this.init(target);
     }
 
-    init(target) {
-        this.loginHandler = new LoginHandler(target);
-        this.appHandler = new AppHandler(target);
-        this.aboutHandler = new AppChildHandler(About, this.appHandler);
-        this.topicsHandler = new TopicsHandler(this.appHandler);
-        this.tasksHandler = new TasksHandler(this.topicsHandler);
+    init(target) { 
+        this.handlers = [
+            this.appHandler = new AppHandler('/', target),
+            this.loginHandler = new LoginHandler('/login', target),
+            this.aboutHandler = new AppChildHandler('/app/about', About, this.appHandler),
+            this.topicsHandler = new TopicsHandler('/app/topics', this.appHandler),
+            this.tasksHandler = new TasksHandler('/app/topics/:topicId',this.topicsHandler)
+        ];
 
-        this.router
-            .add('/', this.appHandler.route)
-            .add('/login', this.loginHandler.route)
-            .add('/app/about', this.aboutHandler.route)
-            .add('/app/topics', this.topicsHandler.route)
-            .add('/app/topics/:topicId', this.tasksHandler.route)
-            .start({
-                fallback: '/'
-            });
+        this.handlers.forEach(
+            x => this.router.add(x.path, x.route)
+        );
+        this.router.start({
+            fallback: '/'
+        });
     }
 }

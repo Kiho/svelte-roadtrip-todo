@@ -21,7 +21,7 @@ const allWithAsync = (...listOfPromises) => {
 
 export default class TasksHandler extends AppChildHandler {
 
-    constructor(parent) {
+    constructor(path, parent) {
         const options = {
             methods: {
                 setTaskDone: function(index, done) {
@@ -35,7 +35,7 @@ export default class TasksHandler extends AppChildHandler {
                 }
             }
         }
-        super(Component, parent, options);
+        super(path, Component, parent, options);
         this.target = 'uiView1';
 	}
 

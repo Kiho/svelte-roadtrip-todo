@@ -26,8 +26,8 @@ function getTasksMap(topics) {
 }
 
 export default class TopicsHandler extends AppChildHandler {
-    constructor(parent) {
-		super(Component, parent);
+    constructor(path, parent) {
+		super(path, Component, parent);
 	}
 	
  	protected activate(component) {

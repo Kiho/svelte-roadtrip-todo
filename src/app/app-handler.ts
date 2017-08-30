@@ -4,82 +4,42 @@ import GenericHandler from '../generic-handler';
 
 const model = require('../../modules/model.js');
 
-export default class AppHandler {
-	app;
+export default class AppHandler extends GenericHandler {
+    constructor(path, target) {
+		super(path, Component, null);
 
-    constructor(private target) {
-        this.beforeEnter = this.beforeEnter.bind(this);
-        this.enter = this.enter.bind(this);
-        this.leave = this.leave.bind(this);
-        // this.create = this.create.bind(this);
-        // this.destroy = this.destroy.bind(this);
+		this.target= target;
+
+		this.logout = this.logout.bind(this);
+		this.activate = this.activate.bind(this);
 	}
 	
-	protected isLoggedIn() {
-        const currentUser = model.getCurrentUser()                
-        return (currentUser && currentUser.name);
+	protected logout() {
+		model.saveCurrentUser(null);
+		roadtrip.goto('/login');
 	}
 
-	private destroyPrevious  = (current, previous) => {
-        if (current && previous && previous.destroy) {
-            if(current.pathname.indexOf(previous.pathname) === -1) {
-                previous.destroy();
-            }
-        }
-    }
-	
 	protected beforeEnter(current, previous) {
 		if (!this.isLoggedIn()) {
 			roadtrip.goto('/login');
-		} else if (current.pathname === '' ||current.pathname === 'app') {
+		} else if (current.pathname === '' || current.pathname === 'app') {
 			roadtrip.goto('/app/topics');
-		}        
+		}
 	}
 	
-	activate(component, self) {
-		component.on('logout', function() {
-			model.saveCurrentUser(null);
-			self.app.teardown();
-			self.app = null;
-			roadtrip.goto('/login');
-		});
-	}
-
-	public createApp = () => {
-		console.log('createApp', this.app);
-        if (!this.app) {
-            this.app = new Component({
-				target: document.querySelector("#app-root"),
-				data: { currentUser: model.getCurrentUser() },
-			}); 
-			this.activate(this.app, this);
-        }
-	}
-	
-	public destroyApp  = () => {
-		console.log('destroyApp', this.app);
-        if (this.app) {
-			this.app.destroy();
-			this.app = null;
-        }
+	activate(component) {
+		component.on('logout', this.logout);
 	}
 
 	protected enter(current, previous) {
-		this.destroyPrevious(current, previous);
-		this.createApp();
+		this.options = { data: { currentUser: model.getCurrentUser() } };
 		console.log('Entered App!', current);
+		super.enter(current, previous);
+		this.activate(this.component);
 	}
 
 	protected leave(current, previous) {
-        // this.destroyApp();
-        console.log('Left App!', current);  
-    }
-
-    get route() {
-        return {
-            beforeenter: this.beforeEnter,
-            enter: this.enter,
-            leave: this.leave,
-        }
+        current.destroy = this.destroy;
+        console.log('Left App!', current);
     }
 }
