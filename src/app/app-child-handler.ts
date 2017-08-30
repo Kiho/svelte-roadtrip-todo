@@ -5,17 +5,14 @@ import GenericHandler from '../generic-handler';
 const model = require('../../modules/model.js');
 
 export default class AppChildHandler extends GenericHandler {
-    // createApp;
-
     constructor(path, child, parent, options?) {
         super(path, child, parent, options);
-        // this.createApp = this.create;
 	}
 	
 	protected beforeEnter(current, previous) {
 		if (!this.isLoggedIn()) {
 			roadtrip.goto('/login');
-		} else if (current.pathname === '' ||current.pathname === 'app') {
+		} else if (current.pathname === '' || current.pathname === 'app') {
 			roadtrip.goto('/app/topics');
 		}        
 	}	

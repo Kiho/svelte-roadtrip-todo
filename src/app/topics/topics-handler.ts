@@ -3,7 +3,7 @@ import Component from './topics.html'
 import roadtrip from 'roadtrip';
 import GenericHandler from '../../generic-handler';
 import AppChildHandler from '../app-child-handler';
-// import Tasks from './tasks/tasks'
+
 declare var process;
 
 const model = require('../../../modules/model.js')
@@ -89,9 +89,4 @@ export default class TopicsHandler extends AppChildHandler {
 			})
 		})
 	}
-
-	protected enter(current, previous) {
-		super.enter(current, previous);
-		this.activate(this.component);
-    }
 }

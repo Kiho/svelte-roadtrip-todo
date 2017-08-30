@@ -88,14 +88,6 @@ export default class TasksHandler extends AppChildHandler {
         // component.findElement('.add-new-task').focus()
     }
 
-    // protected destroyPrevious  = (current, previous) => {
-    //     if (current && previous && previous.destroy) {
-    //         if(current.pathname.indexOf(previous.pathname) === -1) {
-    //             previous.destroy();
-    //         }
-    //     }
-    // }
-
 	protected enter(current, previous) {
         const self = this;
         if (roadtrip.data.then) {

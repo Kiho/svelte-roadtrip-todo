@@ -7,7 +7,7 @@ roadtrip.Routing = {}
 export default abstract class GenericHandler extends BaseHandler {
     constructor(path: string, ctor, public parent, protected options = {}) {
         super(path, ctor);
-
+        
         this.beforeEnter = this.beforeEnter.bind(this);
         this.enter = this.enter.bind(this);
         this.leave = this.leave.bind(this);
@@ -31,6 +31,7 @@ export default abstract class GenericHandler extends BaseHandler {
         } else {
             console.warn('Routing.notify was not set');
         }
+        this.activate(this.component, previous);
     }
 
     protected leave(current, previous) {
@@ -44,5 +45,9 @@ export default abstract class GenericHandler extends BaseHandler {
             enter: this.enter,
             leave: this.leave,
         }
+    }
+
+    protected activate(component, current) {
+        console.warn('activate generic handler');
     }
 }

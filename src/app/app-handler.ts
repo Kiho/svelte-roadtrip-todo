@@ -35,11 +35,11 @@ export default class AppHandler extends GenericHandler {
 		this.options = { data: { currentUser: model.getCurrentUser() } };
 		console.log('Entered App!', current);
 		super.enter(current, previous);
-		this.activate(this.component);
+		// this.activate(this.component);
 	}
 
-	protected leave(current, previous) {
-        current.destroy = this.destroy;
-        console.log('Left App!', current);
-    }
+	// protected leave(current, previous) {
+    //     current.destroy = this.destroy;
+    //     console.log('Left App!', current);
+    // }
 }
