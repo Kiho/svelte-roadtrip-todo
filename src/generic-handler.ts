@@ -5,7 +5,7 @@ const model = require('../modules/model.js');
 roadtrip.Routing = {}
 
 export default abstract class GenericHandler extends BaseHandler {
-    constructor(path: string, ctor, public parent, protected options = {}) {
+    constructor(path: string, ctor, public parent: GenericHandler, protected options = {}) {
         super(path, ctor);
         
         this.beforeEnter = this.beforeEnter.bind(this);

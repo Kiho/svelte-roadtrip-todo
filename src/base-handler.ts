@@ -34,6 +34,10 @@ export default abstract class BaseHandler {
         this.leave = this.leave.bind(this);
     }
 
+    protected isSameHandler = (current, previous) => {
+        return  current && previous && (current.handler === previous.handler && previous.handler);
+    }
+
     protected destroyPrevious  = (current, previous) => {
         if (current && previous) {
             if (previous.destroy) {
@@ -62,17 +66,17 @@ export default abstract class BaseHandler {
         return mountTo ?  mountTo : document.querySelector(this.target);
     }
 
-    protected create(options) {
+    public create(options) {
         if (!this.component) {            
             options.target = this.findMountTo(this.parent, this.target);
             this.component = construct(this.ctor, options);
-            console.warn('generic - create', this.component); 
+            console.log('generic - create', this.component); 
         } 
     }
 
     protected destroy() {
         if (this.component) {
-            console.warn('generic - destroy', this.component); 
+            console.log('generic - destroy', this.component); 
             this.component.destroy();
             this.component = null;
         }

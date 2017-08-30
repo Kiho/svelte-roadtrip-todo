@@ -27,7 +27,7 @@ export default class AppHandler extends GenericHandler {
 		}
 	}
 	
-	activate(component) {
+	protected activate(component) {
 		component.on('logout', this.logout);
 	}
 
@@ -35,11 +35,5 @@ export default class AppHandler extends GenericHandler {
 		this.options = { data: { currentUser: model.getCurrentUser() } };
 		console.log('Entered App!', current);
 		super.enter(current, previous);
-		// this.activate(this.component);
 	}
-
-	// protected leave(current, previous) {
-    //     current.destroy = this.destroy;
-    //     console.log('Left App!', current);
-    // }
 }

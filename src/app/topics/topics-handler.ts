@@ -33,6 +33,7 @@ export default class TopicsHandler extends AppChildHandler {
  	protected activate(component) {
 		const topics = getTopicsSync();
 		const tasks = getTasksMap(topics);
+		const self = this;
 
 		component.set({ 
 			topics: topics,
@@ -40,28 +41,27 @@ export default class TopicsHandler extends AppChildHandler {
 		});
 
 		topics.forEach(function(topic) {
-			recalculateTasksLeftToDoInTopic(topic.id)
+			recalculateTasksLeftToDoInTopic(topic.id);
 		});
 
 		function setFocusOnAddTopicEdit() {
-			// process.nextTick(function() {
-			// 	component.findElement('.new-topic-name').focus()
-			// 	// (<HTMLElement>component.mountedToTarget.querySelector('.new-topic-name')).focus()
-			// })
+			process.nextTick(function() {
+				self.findElement('.new-topic-name').focus();
+			});
 		}
 
 		function recalculateTasksLeftToDoInTopic(topicId) {
 			model.getTasks(topicId, function(err, tasks) {
 				const leftToDo =  tasks.reduce(function(toDo, task) {
 					return toDo + (task.done ? 0 : 1)
-				}, 0)
+				}, 0);
 
 				component.set({
 					tasksUndone: Object.assign({}, component.get('tasksUndone'), {
 						[topicId]: leftToDo
 					})
-				})
-			})
+				});
+			});
 		}
 
 		component.on('add-topic', function() {
@@ -81,12 +81,12 @@ export default class TopicsHandler extends AppChildHandler {
 					topicId: newTopic.id
 				})
 			} else if (!addingTopic) {
-				// setFocusOnAddTopicEdit()
+				setFocusOnAddTopicEdit();
 			}
 
 			component.set({
 				addingTopic: !addingTopic
-			})
+			});
 		})
 	}
 }

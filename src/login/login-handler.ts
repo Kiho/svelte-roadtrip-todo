@@ -11,7 +11,6 @@ export default class LoginHandler extends GenericHandler {
         super(path, Component, null);
 
         this.login = this.login.bind(this);
-
     }
 
     login() {
@@ -27,30 +26,4 @@ export default class LoginHandler extends GenericHandler {
     protected activate(component) {
         this.component.on('login', this.login);
     }
-
-    // protected enter(current, previous) {
-    //     current.handler = this;
-    //     this.routeData = current;
-    //     this.destroyPrevious(current, previous);
-    //     this.create({});
-    //     console.log('Entered!', current); 
-    //     if (roadtrip.Routing.notify) {
-    //         roadtrip.Routing.notify(current); 
-    //     } else {
-    //         console.warn('Routing.notify was not set');
-    //     }
-    //     this.activate(this.component);
-    // }
-
-    // protected leave(current, previous) {
-    //     current.destroy = this.destroy;
-    //     console.log('Left!', current);  
-    // }
-
-    // get route() {
-    //     return {
-    //         enter: this.enter,
-    //         leave: this.leave,
-    //     }
-    // }
 }

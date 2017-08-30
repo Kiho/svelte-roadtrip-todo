@@ -50,13 +50,11 @@ export default class TasksHandler extends AppChildHandler {
     }
 
  	protected activate(component, current) {
-        const topicId = current.params.topicId; 
-        console.log('activate - topicId', topicId);
-
         component.on('newTaskKeyup', function(e) {
+            const topicId = component.get('topicId')
             const newTaskName = component.get('newTaskName')
             if (e.keyCode === 13 && newTaskName) {
-                createNewTask(newTaskName)
+                createNewTask(topicId, newTaskName)
                 component.set({
                     newTaskName: ''
                 })
@@ -77,7 +75,7 @@ export default class TasksHandler extends AppChildHandler {
             model.saveTasks(topicId, tasksWithIndexElementRemoved)
         })
 
-        function createNewTask(taskName) {
+        function createNewTask(topicId, taskName) {
             const task = model.saveTask(topicId, taskName)
             const newTasks = component.get('tasks').concat(task)
             component.set({
@@ -85,7 +83,7 @@ export default class TasksHandler extends AppChildHandler {
             })
         }
 
-        // component.findElement('.add-new-task').focus()
+        this.findElement('.add-new-task').focus()
     }
 
 	protected enter(current, previous) {
@@ -97,7 +95,9 @@ export default class TasksHandler extends AppChildHandler {
                 // this.options = Object.assign(this.options, { data: { topic: data[0], tasks: data[1], topicId: data[2] } });               
                 super.enter(current, previous);
                 this.component.set({ topic: data[0], tasks: data[1], topicId: data[2] });
-                this.activate(this.component, current);
+                if (!this.isSameHandler(current, previous)) {
+                    this.activate(this.component, current);
+                }
             }, rejectionReason => console.log('reason:', rejectionReason)) // reason: rejected!
         }
     }
