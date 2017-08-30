@@ -49,7 +49,8 @@ export default class AppHandler {
 		console.log('createApp', this.app);
         if (!this.app) {
             this.app = new Component({
-                target: document.querySelector("#app-root"),
+				target: document.querySelector("#app-root"),
+				data: { currentUser: model.getCurrentUser() },
 			}); 
 			this.activate(this.app, this);
         }

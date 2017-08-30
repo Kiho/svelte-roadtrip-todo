@@ -88,13 +88,23 @@ export default class TasksHandler extends AppChildHandler {
         // component.findElement('.add-new-task').focus()
     }
 
+    // protected destroyPrevious  = (current, previous) => {
+    //     if (current && previous && previous.destroy) {
+    //         if(current.pathname.indexOf(previous.pathname) === -1) {
+    //             previous.destroy();
+    //         }
+    //     }
+    // }
+
 	protected enter(current, previous) {
         const self = this;
-		super.enter(current, previous);
         if (roadtrip.data.then) {
             return roadtrip.data.then(data => {
-                console.log('resolvedData', data) // will not run since we have a rejection!
-                this.component.set({ topic: data[0], tasks: data[1] });
+                console.log('resolvedData', data) // will not run since we have a rejection! 
+                // this.destroyPrevious(current, previous);
+                // this.options = Object.assign(this.options, { data: { topic: data[0], tasks: data[1], topicId: data[2] } });               
+                super.enter(current, previous);
+                this.component.set({ topic: data[0], tasks: data[1], topicId: data[2] });
                 this.activate(this.component, current);
             }, rejectionReason => console.log('reason:', rejectionReason)) // reason: rejected!
         }

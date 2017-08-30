@@ -6,11 +6,11 @@ roadtrip.Routing = {}
 function construct(component, options) {
     return options.methods
         ? instantiateWithMethods(component, options, options.methods)
-        : new component(options)
+        : new component(options);
 }
 
 function instantiateWithMethods(component, options, methods) {
-	return Object.assign(new component(options), methods)
+	return Object.assign(new component(options), methods);
 }
 
 export default class GenericHandler {
@@ -20,6 +20,8 @@ export default class GenericHandler {
 
     protected target = 'uiView';
 
+    protected routeData;
+
     constructor(private ctor, public parent, protected options = {}) {
         this.beforeEnter = this.beforeEnter.bind(this);
         this.enter = this.enter.bind(this);
@@ -28,13 +30,19 @@ export default class GenericHandler {
         this.destroy = this.destroy.bind(this);
     }
 
-    private destroyPrevious  = (current, previous) => {
-        if (current && previous && previous.destroy) {
-            if(current.pathname.indexOf(previous.pathname) === -1 && 
-                current.handler !== previous.handler) {
-                previous.destroy();
+    protected destroyPrevious  = (current, previous) => {
+        if (current && previous) {
+            if(previous.destroy) {
+                if(current.pathname.indexOf(previous.pathname) === -1 ) {
+                    previous.destroy();
+                }
             }
         }
+        // if (current !== previous && previous && previous.handler) {
+        //     if (previous.handler.parent) {
+        //         previous.handler.parent.destroyPrevious(current, previous.handler.parent);
+        //     }                
+        // }		
     }
 
     protected isLoggedIn() {
@@ -53,15 +61,13 @@ export default class GenericHandler {
         if (!this.component) {
             options.target = document.querySelector(this.target);
             this.component = construct(this.ctor, options);
-            console.warn('create', this.component); 
-        } else {
-            this.component.set(options);
-        }
+            // console.warn('create', this.component); 
+        } 
     }
 
     protected destroy() {
         if (this.component) {
-            console.warn('destroy', this.component); 
+            // console.warn('destroy', this.component); 
             this.component.destroy();
             this.component = null;
         }
@@ -69,6 +75,7 @@ export default class GenericHandler {
 
     protected enter(current, previous) {
         current.handler = this;
+        this.routeData = current;
         this.destroyPrevious(current, previous);
         this.create(this.options);
         console.log('Entered!', current); 

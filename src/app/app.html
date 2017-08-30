@@ -21,7 +21,7 @@
 		</div>
 		<div class="nav navbar-right">
 			<p class="navbar-text">
-				Logged in as {{currentUser}}
+				Logged in as {{currentUser.name}}
 			</p>
 		</div>
 	</div>
@@ -37,6 +37,7 @@
         data () {
 			return {
 				currentPath: '',
+				currentUser: {},
 			}
 		},
         components: {

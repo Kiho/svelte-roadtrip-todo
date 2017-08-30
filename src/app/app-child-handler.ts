@@ -21,7 +21,7 @@ export default class AppChildHandler extends GenericHandler {
 	}	
     
 	protected enter(current, previous) {
-		this.parent.createApp();
+		this.parent.createApp(this.options);
 		super.enter(current, previous);
 	}
 }
