@@ -37,12 +37,12 @@ export default class GenericHandler {
                     previous.destroy();
                 }
             }
-        }
-        // if (current !== previous && previous && previous.handler) {
-        //     if (previous.handler.parent) {
-        //         previous.handler.parent.destroyPrevious(current, previous.handler.parent);
-        //     }                
-        // }		
+            if (current.handler !== previous.handler && previous.handler) {
+                if (previous.handler.parent) {
+                    previous.handler.parent.destroyPrevious(current, previous.handler.parent);
+                }                
+            }
+        }		
     }
 
     protected isLoggedIn() {
