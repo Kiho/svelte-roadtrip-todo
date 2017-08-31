@@ -2,8 +2,6 @@ import roadtrip from 'roadtrip';
 import BaseHandler from './base-handler';
 const model = require('../modules/model.js');
 
-roadtrip.Routing = {}
-
 export default abstract class GenericHandler extends BaseHandler {
     constructor(path: string, ctor, public parent: GenericHandler, protected options = {}) {
         super(path, ctor);
@@ -25,12 +23,15 @@ export default abstract class GenericHandler extends BaseHandler {
         this.routeData = current;
         this.destroyPrevious(current, previous);
         this.create(this.options);
-        console.log('Entered!', current); 
-        if (roadtrip.Routing.notify) {
-            roadtrip.Routing.notify(current); 
-        } else {
-            console.warn('Routing.notify was not set');
-        }
+        console.log('Entered!', current);
+
+        roadtrip.routing.events.emit('enter', current);
+
+        // if (roadtrip.routing.notify) {
+        //     roadtrip.routing.notify(current); 
+        // } else {
+        //     console.warn('Routing.notify was not set');
+        // }
         this.activate(this.component, previous);
     }
 

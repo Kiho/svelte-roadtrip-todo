@@ -40,10 +40,6 @@ export default class TopicsHandler extends AppChildHandler {
 			tasks: tasks,
 		});
 
-		topics.forEach(function(topic) {
-			recalculateTasksLeftToDoInTopic(topic.id);
-		});
-
 		function setFocusOnAddTopicEdit() {
 			process.nextTick(function() {
 				self.findElement('.new-topic-name').focus();
@@ -64,6 +60,12 @@ export default class TopicsHandler extends AppChildHandler {
 			});
 		}
 
+		model.on('tasks saved', recalculateTasksLeftToDoInTopic);
+
+		topics.forEach(function(topic) {
+			recalculateTasksLeftToDoInTopic(topic.id);
+		});
+		
 		component.on('add-topic', function() {
 			const addingTopic = component.get('addingTopic')
 			const newTopicName = component.get('newTopic')

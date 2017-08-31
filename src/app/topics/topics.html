@@ -5,13 +5,7 @@
 				{{#each topics as topic}}
 					<RouterLink to={{ "/app/topics/" + topic.id }} location={{currentPath}} calssName="list-group-item" >
 						{{topic.name}} <span class="badge">{{ tasksUndone[topic.id] }}</span>
-					</RouterLink> 
-					<!-- <a
-						href="{{ asr.makePath('app.topics.tasks', { topicId: topic.id }) }}"
-						class="list-group-item {{ asr.stateIsActive('app.topics.tasks', { topicId: topic.id }) ? 'active' : '' }}"
-					>
-						{{topic.name}} <span class="badge">{{ tasksUndone[topic.id] }}</span>
-					</a> -->
+					</RouterLink>
 				{{/each}}
 			</div>
 			<form action="" onsubmit="return false" on:submit="fire('add-topic', event)">

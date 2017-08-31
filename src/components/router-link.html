@@ -1,11 +1,19 @@
-<a href='{{basePath}}{{ to }}' class="{{ calssName + ' ' + active}}" on:click='navigate(event, to)'>
-    {{ yield }}
-</a>
+{{#if li}}
+    <li class="{{ calssName + ' ' + active}}">
+        <a href='{{basePath}}{{ to }}' on:click='navigate(event, to)'>
+            {{ yield }}
+        </a>
+    </li>
+{{else}}
+    <a href='{{basePath}}{{ to }}' class="{{ calssName + ' ' + active}}" on:click='navigate(event, to)'>
+        {{ yield }}
+    </a>
+{{/if}}
 
 <script>
     import roadtrip from 'roadtrip';
 
-    const activedClassName = 'router-link-active'
+    const activedClassName = 'active'
     
     export default {
         data () {
@@ -15,6 +23,7 @@
               active: '',
               location: '',
               calssName: '',
+              li: false,
             }
         },
         oncreate () {    
@@ -31,12 +40,12 @@
                     roadtrip.goto(to);
                 } else {
                     this.fire('logout', {
-                        thing: 'this event was fired'
+                        thing: 'logout event was fired'
                     });
                 }
             },
-            setActivedClass (location) {
-                if (location === this.get('to')) {
+            setActivedClass (location) {                
+                if (roadtrip.routing.isActive (location, this.get('to'))) {
                     this.set({ active: activedClassName })
                 } else {
                     this.set({ active: '' })
