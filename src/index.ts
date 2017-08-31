@@ -9,7 +9,6 @@ import Events from './events';
 roadtrip.routing = Events;
 
 document.addEventListener('DOMContentLoaded', main);
-
 function main () {
-    roadtrip.routes = new Routes('#app-root');
+  (window as any).Routes = new Routes('#app-root');
 }

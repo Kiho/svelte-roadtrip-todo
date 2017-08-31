@@ -24,18 +24,15 @@ export default abstract class GenericHandler extends BaseHandler {
         this.destroyPrevious(current, previous);
         this.create(this.options);
         console.log('Entered!', current);
-
         roadtrip.routing.events.emit('enter', current);
-
-        // if (roadtrip.routing.notify) {
-        //     roadtrip.routing.notify(current); 
-        // } else {
-        //     console.warn('Routing.notify was not set');
-        // }
-        this.activate(this.component, previous);
+        this.activate(this.component, current);
     }
 
     protected leave(current, previous) {
+		if (current.destroyOnLeave) {
+			current.destroyOnLeave.destroy();
+			current.destroyOnLeave = null;
+		}
         current.destroy = this.destroy;
         console.log('Left!', current);  
     }

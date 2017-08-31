@@ -46,7 +46,7 @@ export default abstract class BaseHandler {
                 }
             }
             if (current.handler !== previous.handler && previous.handler) {
-                if (current.handler.target == previous.handler.target) {
+                if (current.handler.path == previous.handler.path) {
                     previous.destroy();
                 }
                 if (previous.handler.parent) {
@@ -62,8 +62,8 @@ export default abstract class BaseHandler {
     }
 
     private findMountTo(parent, selector) {
-        let mountTo = this.parent ? this.parent.findElement(this.target) : null;            
-        return mountTo ?  mountTo : document.querySelector(this.target);
+        let mountTo = parent ? parent.findElement(selector) : null;            
+        return mountTo ?  mountTo : document.querySelector(selector);
     }
 
     public create(options) {

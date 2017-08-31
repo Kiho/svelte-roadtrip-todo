@@ -36,7 +36,6 @@ export default class TasksHandler extends AppChildHandler {
             }
         }
         super(path, Component, parent, options);
-        this.target = 'uiView1';
 	}
 
     protected beforeEnter(current, previous) {
@@ -59,7 +58,7 @@ export default class TasksHandler extends AppChildHandler {
                     newTaskName: ''
                 })
             }
-        })
+        });
 
         component.on('remove', function(taskIndex) {
             const topicId = component.get('topicId')
@@ -73,7 +72,7 @@ export default class TasksHandler extends AppChildHandler {
             })
 
             model.saveTasks(topicId, tasksWithIndexElementRemoved)
-        })
+        });
 
         function createNewTask(topicId, taskName) {
             const task = model.saveTask(topicId, taskName)
@@ -83,16 +82,14 @@ export default class TasksHandler extends AppChildHandler {
             })
         }
 
-        this.findElement('.add-new-task').focus()
+        this.findElement('.add-new-task').focus();
     }
 
 	protected enter(current, previous) {
         const self = this;
         if (roadtrip.data.then) {
             return roadtrip.data.then(data => {
-                console.log('resolvedData', data) // will not run since we have a rejection! 
-                // this.destroyPrevious(current, previous);
-                // this.options = Object.assign(this.options, { data: { topic: data[0], tasks: data[1], topicId: data[2] } });               
+                console.log('resolvedData', data);      
                 super.enter(current, previous);
                 this.component.set({ topic: data[0], tasks: data[1], topicId: data[2] });
                 if (!this.isSameHandler(current, previous)) {
@@ -102,81 +99,3 @@ export default class TasksHandler extends AppChildHandler {
         }
     }
 }
-
-// export default function(stateRouter: IStateRouter) {
-// 	stateRouter.addState({
-// 		name: 'app.topics.tasks',
-// 		route: '/:topicId(' + UUID_V4_REGEX + ')',
-// 		template: {
-// 			component: Component,
-// 			options: {
-// 				methods: {
-// 					setTaskDone: function(index, done) {
-// 						const topicId = this.get('topicId')
-// 						const tasks = this.get('tasks').slice()
-// 						tasks[index].done = done
-
-// 						this.set({ tasks })
-
-// 						model.saveTasks(topicId, tasks)
-// 					}
-// 				}
-// 			}
-// 		},
-// 		resolve: function(data, parameters, cb) {
-// 			all({
-// 				topic: model.getTopic.bind(null, parameters.topicId),
-// 				tasks: model.getTasks.bind(null, parameters.topicId),
-// 				topicId: parameters.topicId
-// 			}, cb)
-// 		},
-// 		activate: function(context) {
-// 			const component = context.domApi
-// 			const topicId = context.parameters.topicId
-// 			console.log('activate - topicId', topicId)
-// 			component.on('newTaskKeyup', function(e) {
-// 				const newTaskName = component.get('newTaskName')
-// 				if (e.keyCode === 13 && newTaskName) {
-// 					createNewTask(newTaskName)
-// 					component.set({
-// 						newTaskName: ''
-// 					})
-// 				}
-// 			})
-
-// 			component.on('remove', function(taskIndex) {
-// 				const topicId = component.get('topicId')
-// 				let tasksWithIndexElementRemoved = component.get('tasks').slice()
-
-// 				tasksWithIndexElementRemoved.splice(taskIndex, 1)
-// 				console.log('tasksWithIndexElementRemoved', topicId, tasksWithIndexElementRemoved)
-
-// 				component.set({
-// 					tasks: tasksWithIndexElementRemoved
-// 				})
-
-// 				model.saveTasks(topicId, tasksWithIndexElementRemoved)
-// 			})
-
-// 			function createNewTask(taskName) {
-// 				// const parentTopicId = component.get('topicId')
-// 				//console.log('topicId', topicId, 'parentTopicId', parentTopicId)				
-// 				// console.log('context.parameters.topicId', context.parameters.topicId)
-// 				const task = model.saveTask(topicId, taskName)
-// 				const newTasks = component.get('tasks').concat(task)
-// 				component.set({
-// 					tasks: newTasks
-// 				})
-// 			}
-
-// 			component.findElement('.add-new-task').focus()
-// 			// (<HTMLElement>component.mountedToTarget.querySelector('.add-new-task')).focus()
-// 		}
-// 	})
-
-// 	stateRouter.addState({
-// 		name: 'app.topics.no-task',
-// 		route: '',
-// 		template: NoTaskSelected
-// 	})
-// }

@@ -1,5 +1,6 @@
 import all from 'async-all'
-import Component from './topics.html'
+import Component from './topics.html';
+import NoTaskSelected from './tasks/no-task-selected.html';
 import roadtrip from 'roadtrip';
 import GenericHandler from '../../generic-handler';
 import AppChildHandler from '../app-child-handler';
@@ -30,7 +31,7 @@ export default class TopicsHandler extends AppChildHandler {
 		super(path, Component, parent);
 	}
 	
- 	protected activate(component) {
+ 	protected activate(component, current) {
 		const topics = getTopicsSync();
 		const tasks = getTasksMap(topics);
 		const self = this;
@@ -61,14 +62,18 @@ export default class TopicsHandler extends AppChildHandler {
 		}
 
 		model.on('tasks saved', recalculateTasksLeftToDoInTopic);
+		component.on('destroy', () => {
+			model.removeListener('tasks saved', recalculateTasksLeftToDoInTopic);
+			console.log('model.removeListener - tasks saved'); 
+		});
 
 		topics.forEach(function(topic) {
 			recalculateTasksLeftToDoInTopic(topic.id);
 		});
 		
 		component.on('add-topic', function() {
-			const addingTopic = component.get('addingTopic')
-			const newTopicName = component.get('newTopic')
+			const addingTopic = component.get('addingTopic');
+			const newTopicName = component.get('newTopic');
 
 			if (addingTopic && newTopicName) {
 				const newTopic = model.addTopic(newTopicName)
@@ -76,12 +81,10 @@ export default class TopicsHandler extends AppChildHandler {
 				component.set({
 					topics: component.get('topics').concat(newTopic),
 					newTopic: ''
-				})
+				});
 
-				recalculateTasksLeftToDoInTopic(newTopic.id)
-				roadtrip.goto('/app/topics/tasks', {
-					topicId: newTopic.id
-				})
+				recalculateTasksLeftToDoInTopic(newTopic.id);
+				roadtrip.goto('/app/topics/' + newTopic.id);
 			} else if (!addingTopic) {
 				setFocusOnAddTopicEdit();
 			}
@@ -89,6 +92,8 @@ export default class TopicsHandler extends AppChildHandler {
 			component.set({
 				addingTopic: !addingTopic
 			});
-		})
+		});
+
+		current.destroyOnLeave = new NoTaskSelected({target: this.findElement('uiView')});
 	}
 }
