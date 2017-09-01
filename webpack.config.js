@@ -1,6 +1,6 @@
 
-var path = require('path')
-var webpack = require('webpack')
+var path = require('path');
+var webpack = require('webpack');
 var UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
@@ -34,10 +34,6 @@ module.exports = {
   resolve: {
     extensions: ['.ts', '.js', '.json', 'html'],
   },
-  devServer: {
-    historyApiFallback: true,
-    noInfo: true
-  },
   performance: {
     hints: false
   },
@@ -62,4 +58,21 @@ if (process.env.NODE_ENV === 'production') {
       minimize: true
     })
   ])
+} else {
+    module.exports.devServer = {
+        port: 8085,
+        host: "localhost",
+        historyApiFallback: true,
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+            "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
+        },
+        watchOptions: {aggregateTimeout: 300, poll: 1000},
+        contentBase: './dist',
+        open: true,
+        // proxy: {
+        //     "/api/*": "http://127.0.0.1:3001"
+        // }
+      };
 }

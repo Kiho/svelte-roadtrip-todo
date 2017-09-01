@@ -7,4 +7,4 @@ This project was converted from Svelte sample found in [abstract-state-router ex
     npm install
     npm run dev
 
-will open [http://localhost:8084/](http://localhost:8084/) in the browser
+will open [http://localhost:8085/](http://localhost:8085/) in the browser

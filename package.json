@@ -9,7 +9,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "serve": "live-server --cors --port=8084 --watch=./dist/bundle.js,./index.html dist",
     "watch": "webpack -w",
-    "dev": "concurrently \"npm run watch\"  \"npm run serve\" "
+    "serve:dev": "webpack-dev-server --hot --inline",
+    "dev": "cross-env NODE_ENV=development && npm run serve:dev",
+    "dev:w": "concurrently \"npm run watch\"  \"npm run dev\" "
   },
   "keywords": [],
   "author": {
@@ -31,13 +33,15 @@
     "awesome-typescript-loader": "^3.2.3",
     "concurrently": "^3.5.0",
     "copyfiles": "^1.2.0",
+    "cross-env": "^5.0.5",
     "css-loader": "^0.28.1",
     "live-server": "^1.2.0",
     "svelte-loader": "^2.1.0",
     "ts-loader": "^2.3.3",
     "typescript": "^2.4.2",
-    "webpack": "^2.7.0",
     "uglify-js": "git://github.com/mishoo/UglifyJS2#harmony-v2.8.22",
-    "uglifyjs-webpack-plugin": "0.4.4"
+    "uglifyjs-webpack-plugin": "0.4.4",
+    "webpack": "^2.7.0",
+    "webpack-dev-server": "^2.7.1"
   }
 }
