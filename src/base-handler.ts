@@ -1,4 +1,6 @@
 import roadtrip from 'roadtrip';
+import GenericHandler from './generic-handler';
+
 const model = require('../modules/model.js');
 
 function construct(component, options) {
@@ -16,7 +18,7 @@ export default abstract class BaseHandler {
     
     public component;
 
-    public parent: BaseHandler;
+    public element: HTMLElement;
 
     protected target = 'uiView';
 
@@ -24,7 +26,7 @@ export default abstract class BaseHandler {
     
     protected options;
 
-    constructor(public path, private ctor) {
+    constructor(public path, private ctor, public parent: GenericHandler) {
         this.create = this.create.bind(this);
         this.destroy = this.destroy.bind(this);
         this.findElement = this.findElement.bind(this);
@@ -38,21 +40,34 @@ export default abstract class BaseHandler {
         return  current && previous && (current.handler === previous.handler && previous.handler);
     }
 
-    protected destroyPrevious  = (current, previous) => {
-        if (current && previous) {
+    protected destroyPrevious  = (current, previous) => {        
+        if (current && previous) {                 
             if (previous.destroy) {
-                if (current.pathname.indexOf(previous.pathname) === -1 ) {
+                if (current.pathname.indexOf(previous.pathname ? previous.pathname : 'app') === -1 ) {
+                    previous.destroy();
+                } else if (current.handler.findElement() == previous.handler.findElement()) {
                     previous.destroy();
                 }
             }
             if (current.handler !== previous.handler && previous.handler) {
-                if (current.handler.path == previous.handler.path) {
+                if (current.handler.path === previous.handler.path) {
                     previous.destroy();
                 }
                 if (previous.handler.parent) {
-                    previous.handler.parent.destroyPrevious(current, previous.handler.parent.routeData);
-                }                
-            }
+                    if (previous.handler.parent.routeData) {
+                        previous.handler.parent.destroyPrevious(current, previous.handler.parent.routeData);
+                    }
+                    if (current.handler && previous.handler && previous.handler.parent) {
+                        // this happens before creating component for current handler
+                        const owner = current.handler.element ? current.handler.element : document;
+                        const el = owner.querySelector(current.handler.target);
+                        if (el === previous.handler.parent.element) {
+                            console.warn('Destroy same element');
+                            previous.handler.parent.destroy(); 
+                        }   
+                    }
+                }                          
+            }                 
         }		
     }
 
@@ -68,10 +83,13 @@ export default abstract class BaseHandler {
 
     public create(options) {
         if (!this.component) {            
-            options.target = this.findMountTo(this.parent, this.target);
+            this.element = this.findMountTo(this.parent, this.target);
+            options.target = this.element;
             this.component = construct(this.ctor, options);
-            console.log('generic - create', this.component); 
-        } 
+            console.log('generic - create', this.component);
+            return { component: this.component, result: true }
+        }
+        return  { component: this.component, result: false }
     }
 
     protected destroy() {
@@ -82,9 +100,13 @@ export default abstract class BaseHandler {
         }
     }
 
-    public findElement(selector) {
+    public findElement(selector?) {
         if (this.options && this.options.target) {
-            return <HTMLElement>this.options.target.querySelector(selector)
+            let element: Element = this.options.target;
+            if (selector) {
+                element = this.options.target.querySelector(selector);
+            }
+            return <HTMLElement>element;
         }
         return null;        
     }

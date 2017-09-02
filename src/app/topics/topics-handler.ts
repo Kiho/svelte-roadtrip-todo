@@ -31,7 +31,7 @@ export default class TopicsHandler extends AppChildHandler {
 		super(path, Component, parent);
 	}
 	
- 	protected activate(component, current) {
+ 	public activate(component, current) {
 		const topics = getTopicsSync();
 		const tasks = getTasksMap(topics);
 		const self = this;

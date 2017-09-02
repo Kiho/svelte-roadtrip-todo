@@ -4,7 +4,7 @@ const model = require('../modules/model.js');
 
 export default abstract class GenericHandler extends BaseHandler {
     constructor(path: string, ctor, public parent: GenericHandler, protected options = {}) {
-        super(path, ctor);
+        super(path, ctor, parent);
         
         this.beforeEnter = this.beforeEnter.bind(this);
         this.enter = this.enter.bind(this);
@@ -45,7 +45,7 @@ export default abstract class GenericHandler extends BaseHandler {
         }
     }
 
-    protected activate(component, current) {
+    public activate(component, current) {
         console.warn('activate generic handler');
     }
 }

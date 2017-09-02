@@ -1,4 +1,3 @@
-// import Component from './app.html'
 import roadtrip from 'roadtrip';
 import GenericHandler from '../generic-handler';
 
@@ -18,7 +17,10 @@ export default class AppChildHandler extends GenericHandler {
 	}	
     
 	protected enter(current, previous) {
-		this.parent.create(this.options);
+		const parentCreated = this.parent.create(this.options);		
 		super.enter(current, previous);
+		if (parentCreated.result){
+			this.parent.activate(parentCreated.component, current);
+		}
 	}
 }

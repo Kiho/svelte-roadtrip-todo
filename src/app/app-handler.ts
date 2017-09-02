@@ -27,7 +27,7 @@ export default class AppHandler extends GenericHandler {
 		}
 	}
 	
-	protected activate(component) {
+	public activate(component) {
 		component.on('logout', this.logout);		
 	}
 

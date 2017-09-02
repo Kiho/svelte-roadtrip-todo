@@ -23,7 +23,7 @@ export default class LoginHandler extends GenericHandler {
         return false;
     }
 
-    protected activate(component) {
+    public activate(component) {
         this.component.on('login', this.login);
     }
 }
