@@ -1,5 +1,5 @@
 import roadtrip from 'roadtrip';
-import GenericHandler from './generic-handler';
+import GenericHandler from './handlers/generic-handler';
 import LoginHandler from './login/login-handler';
 import AppHandler from './app/app-handler';
 import AppChildHandler from './app/app-child-handler';

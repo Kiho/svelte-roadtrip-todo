@@ -1,7 +1,7 @@
 import roadtrip from 'roadtrip';
 import GenericHandler from './generic-handler';
 
-const model = require('../modules/model.js');
+const model = require('../../modules/model.js');
 
 function construct(component, options) {
     return options.methods

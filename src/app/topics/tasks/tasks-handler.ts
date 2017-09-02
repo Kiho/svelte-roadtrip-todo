@@ -79,10 +79,13 @@ export default class TasksHandler extends AppChildHandler {
             const newTasks = component.get('tasks').concat(task)
             component.set({
                 tasks: newTasks
-            })
+            });
         }
 
-        this.findElement('.add-new-task').focus();
+        const el = this.findElement('.add-new-task');
+        if (el) { 
+            el.focus() 
+        }
     }
 
 	protected enter(current, previous) {

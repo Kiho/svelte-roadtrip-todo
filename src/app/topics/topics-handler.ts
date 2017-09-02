@@ -2,7 +2,7 @@ import all from 'async-all'
 import Component from './topics.html';
 import NoTaskSelected from './tasks/no-task-selected.html';
 import roadtrip from 'roadtrip';
-import GenericHandler from '../../generic-handler';
+import GenericHandler from '../../handlers/generic-handler';
 import AppChildHandler from '../app-child-handler';
 
 declare var process;

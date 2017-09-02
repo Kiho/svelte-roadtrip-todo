@@ -1,5 +1,5 @@
 import roadtrip from 'roadtrip';
-import GenericHandler from '../generic-handler';
+import GenericHandler from '../handlers/generic-handler';
 
 const model = require('../../modules/model.js');
 
