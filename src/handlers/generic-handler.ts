@@ -22,6 +22,7 @@ export default abstract class GenericHandler extends BaseHandler {
         current.handler = this;
         this.routeData = current;
         this.destroyPrevious(current, previous);
+        this.createParent();
         this.create(this.options);
         console.log('Entered!', current);
         roadtrip.routing.events.emit('enter', current);
@@ -45,6 +46,14 @@ export default abstract class GenericHandler extends BaseHandler {
         }
     }
 
+    protected createParent() {
+		if (this.parent && !this.parent.component) {
+			this.parent.createParent();
+        }
+        this.create(this.options);
+        this.activate(this.component, null);
+    }
+    
     public activate(component, current) {
         console.warn('activate generic handler');
     }

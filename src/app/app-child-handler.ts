@@ -15,12 +15,12 @@ export default class AppChildHandler extends GenericHandler {
 			roadtrip.goto('/app/topics');
 		}        
 	}	
-    
+
 	protected enter(current, previous) {
-		const parentCreated = this.parent.create(this.options);		
-		super.enter(current, previous);
-		if (parentCreated.result){
+		const parentCreated = this.parent.create(this.options);
+		if (parentCreated.result) {
 			this.parent.activate(parentCreated.component, current);
-		}
+		}	
+		super.enter(current, previous);
 	}
 }

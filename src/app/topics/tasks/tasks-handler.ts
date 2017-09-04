@@ -49,6 +49,11 @@ export default class TasksHandler extends AppChildHandler {
     }
 
  	public activate(component, current) {
+        if (this.isActivated) {
+			return;
+		}
+        this.isActivated = true;
+        
         component.on('newTaskKeyup', function(e) {
             const topicId = component.get('topicId')
             const newTaskName = component.get('newTaskName')
@@ -87,12 +92,13 @@ export default class TasksHandler extends AppChildHandler {
             el.focus() 
         }
     }
-
+    
 	protected enter(current, previous) {
         const self = this;
         if (roadtrip.data.then) {
             return roadtrip.data.then(data => {
-                console.log('resolvedData', data);      
+                console.log('resolvedData', data);
+                this.createParent();        
                 super.enter(current, previous);
                 this.component.set({ topic: data[0], tasks: data[1], topicId: data[2] });
                 if (!this.isSameHandler(current, previous)) {

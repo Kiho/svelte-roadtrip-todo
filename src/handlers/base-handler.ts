@@ -26,6 +26,8 @@ export default abstract class BaseHandler {
     
     protected options;
 
+    protected isActivated;
+    
     constructor(public path, private ctor, public parent: GenericHandler) {
         this.create = this.create.bind(this);
         this.destroy = this.destroy.bind(this);
