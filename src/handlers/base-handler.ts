@@ -26,8 +26,8 @@ export default abstract class BaseHandler {
     
     protected options;
 
-    protected isActivated;
-    
+    protected reset: (newData) => void;
+
     constructor(public path, private ctor, public parent: GenericHandler) {
         this.create = this.create.bind(this);
         this.destroy = this.destroy.bind(this);
@@ -88,11 +88,27 @@ export default abstract class BaseHandler {
             this.element = this.findMountTo(this.parent, this.target);
             options.target = this.element;
             this.component = construct(this.ctor, options);
-            console.log('generic - create', this.component);
+            console.log('generic - create', this.component);            
             return { component: this.component, result: true }
         }
+        // else if(this.reset) {
+        //     this.reset(options);
+        // }
         return  { component: this.component, result: false }
     }
+
+    // protected createComponentResetter(component) {
+    //     const originalData = Object.assign({ }, component.get());     
+
+    //     return function reset(newData) {
+    //         const resetObject = Object.create(null)
+    //         Object.keys(component.get()).forEach(key => {
+    //             resetObject[key] = undefined
+    //         })
+    //         Object.assign(resetObject, originalData, newData)
+    //         component.set(resetObject)
+    //     }
+    // }
 
     protected destroy() {
         if (this.component) {

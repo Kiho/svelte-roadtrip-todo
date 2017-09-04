@@ -1,11 +1,11 @@
 {{#if li}}
-    <li class="{{ calssName + ' ' + active}}">
+    <li class="{{ calssName + ' ' + active }}">
         <a href='{{basePath}}{{ to }}' on:click='navigate(event, to)'>
             {{ yield }}
         </a>
     </li>
 {{else}}
-    <a href='{{basePath}}{{ to }}' class="{{ calssName + ' ' + active}}" on:click='navigate(event, to)'>
+    <a href='{{basePath}}{{ to }}' class="{{ calssName + ' ' + active }}" on:click='navigate(event, to)'>
         {{ yield }}
     </a>
 {{/if}}
@@ -26,10 +26,11 @@
               li: false,
             }
         },
-        oncreate () {    
+        oncreate () {               
+            const to = this.get('to'); 
             this.observe('location', location => {
-                // console.log(location);
-                this.setActivedClass(location);
+                console.log(location, to);
+                this.setActivedClass(location, to);
             });
         },
         methods: {
@@ -44,8 +45,8 @@
                     });
                 }
             },
-            setActivedClass (location) {                
-                if (roadtrip.routing.isActive (location, this.get('to'))) {
+            setActivedClass(location, to) {                
+                if (roadtrip.routing.isActive(location, to)) {
                     this.set({ active: activedClassName })
                 } else {
                     this.set({ active: '' })

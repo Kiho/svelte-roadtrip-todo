@@ -49,10 +49,10 @@ export default class TasksHandler extends AppChildHandler {
     }
 
  	public activate(component, current) {
-        if (this.isActivated) {
+        if (component.get('isActivated')) {
 			return;
 		}
-        this.isActivated = true;
+        // this.isActivated = true;
         
         component.on('newTaskKeyup', function(e) {
             const topicId = component.get('topicId')
@@ -91,6 +91,7 @@ export default class TasksHandler extends AppChildHandler {
         if (el) { 
             el.focus() 
         }
+        component.set({isActivated: true});
     }
     
 	protected enter(current, previous) {

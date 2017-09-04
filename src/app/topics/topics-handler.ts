@@ -41,11 +41,6 @@ export default class TopicsHandler extends AppChildHandler {
 			tasks: tasks,
 		});
 
-		if (this.isActivated) {
-			return;
-		}
-		this.isActivated = true;
-		
 		function setFocusOnAddTopicEdit() {
 			process.nextTick(function() {
 				self.findElement('.new-topic-name').focus();

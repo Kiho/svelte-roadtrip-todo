@@ -35,7 +35,8 @@
 </div>
 <script>
 	import RouterLink from '../../components/router-link.html';
-
+	import roadtrip from 'roadtrip';
+	
 	export default {
 		components: {
             RouterLink
@@ -49,6 +50,11 @@
 			addingTopic: false,
 			newTopic: '',
 			currentPath: '',
-		})
+		}),
+		oncreate () {
+            roadtrip.routing.events.on('enter', routeData => {       
+                this.set({currentPath: routeData ? routeData.pathname : ''});
+            });
+		},
 	}
 </script>

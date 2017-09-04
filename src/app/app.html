@@ -38,10 +38,8 @@
             RouterLink
         },
         oncreate () {
-            roadtrip.routing.events.on('enter', routeData => {                
-                const path = routeData ? routeData.pathname : '';
-                this.set({currentPath: path});
-                console.log('App : roadtrip.routing.notify', routeData, path);
+            roadtrip.routing.events.on('enter', routeData => {       
+                this.set({currentPath: routeData ? routeData.pathname : ''});
             });
 		}, 
     }
