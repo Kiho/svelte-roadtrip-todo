@@ -17,10 +17,10 @@ export default class AppChildHandler extends GenericHandler {
 	}	
 
 	protected enter(current, previous) {
-		const parentCreated = this.parent.create(this.options);
-		if (parentCreated.result) {
-			this.parent.activate(parentCreated.component, current);
-		}	
+		// const parentCreated = this.parent.create(this.options);
+		// if (parentCreated.result) {
+		// 	this.parent.activate(parentCreated.component, current);
+		// }	
 		super.enter(current, previous);
 	}
 }

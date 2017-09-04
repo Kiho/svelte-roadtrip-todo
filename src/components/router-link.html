@@ -29,7 +29,7 @@
         oncreate () {               
             const to = this.get('to'); 
             this.observe('location', location => {
-                console.log(location, to);
+                // console.log(location, to);
                 this.setActivedClass(location, to);
             });
         },

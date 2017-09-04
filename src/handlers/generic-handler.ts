@@ -50,8 +50,10 @@ export default abstract class GenericHandler extends BaseHandler {
 		if (this.parent && !this.parent.component) {
 			this.parent.createParent();
         }
-        this.create(this.options);
-        this.activate(this.component, null);        
+        if (!this.component) {
+            this.create(this.options);
+            this.activate(this.component, null); 
+        }       
     }
     
     public activate(component, current) {
