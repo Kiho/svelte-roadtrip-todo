@@ -49,11 +49,6 @@ export default class TasksHandler extends AppChildHandler {
     }
 
  	public activate(component, current) {
-        if (component.get('isActivated')) {
-			return;
-		}
-        // this.isActivated = true;
-        
         component.on('newTaskKeyup', function(e) {
             const topicId = component.get('topicId')
             const newTaskName = component.get('newTaskName')
@@ -99,12 +94,12 @@ export default class TasksHandler extends AppChildHandler {
         if (roadtrip.data.then) {
             return roadtrip.data.then(data => {
                 console.log('resolvedData', data);
-                this.createParent();        
+                // this.createParent();        
                 super.enter(current, previous);
                 this.component.set({ topic: data[0], tasks: data[1], topicId: data[2] });
-                if (!this.isSameHandler(current, previous)) {
-                    this.activate(this.component, current);
-                }
+                // if (!this.isSameHandler(current, previous)) {
+                //     this.activateOnce(this.component, current);
+                // }
             }, rejectionReason => console.log('reason:', rejectionReason)) // reason: rejected!
         }
     }

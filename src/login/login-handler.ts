@@ -24,10 +24,6 @@ export default class LoginHandler extends GenericHandler {
     }
 
     public activate(component) {
-        if (component.get('isActivated')) {
-			return;
-		}
         this.component.on('login', this.login);
-        component.set({isActivated: true});
     }
 }

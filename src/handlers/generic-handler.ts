@@ -22,11 +22,11 @@ export default abstract class GenericHandler extends BaseHandler {
         current.handler = this;
         this.routeData = current;
         this.destroyPrevious(current, previous);
-        this.createParent();
-        this.create(this.options);
         console.log('Entered!', current);
-        roadtrip.routing.events.emit('enter', current);
-        this.activate(this.component, current);
+        this.createParent(this);
+        this.create(this.options);
+        this.activateOnce(this.component);    
+        roadtrip.routing.events.emit('enter', current);     
     }
 
     protected leave(current, previous) {
@@ -46,17 +46,32 @@ export default abstract class GenericHandler extends BaseHandler {
         }
     }
 
-    protected createParent() {
+    protected createParent(self) {
 		if (this.parent && !this.parent.component) {
-			this.parent.createParent();
+			this.parent.createParent(self);
         }
         if (!this.component) {
+            if (self !== this) {
+                const that = this;
+                const destroy = self.destroy;
+                self.destroy = function() {
+                    destroy();
+                    that.destroy();
+                }
+            }
             this.create(this.options);
-            this.activate(this.component, null); 
+            this.activateOnce(this.component);            
         }       
     }
     
-    public activate(component, current) {
+    public activateOnce(component, current?) {
+        if (!this.component.get('isActivated')) {
+			this.activate(component, current);
+            component.set({isActivated: true});
+        }
+    }
+
+    public activate(component, current?) {
         console.warn('activate generic handler');
     }
 }
