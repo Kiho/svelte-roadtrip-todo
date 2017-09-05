@@ -13,6 +13,7 @@ export default class AppChildHandler extends GenericHandler {
 			roadtrip.goto('/login');
 		} else if (current.pathname === '' || current.pathname === 'app') {
 			roadtrip.goto('/app/topics');
-		}        
+		}   
+		super.beforeEnter(current, previous);     
 	}	
 }

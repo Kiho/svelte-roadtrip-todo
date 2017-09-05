@@ -95,11 +95,5 @@ export default class TopicsHandler extends AppChildHandler {
 		});
 
 		this.addChildComponent(component, NoTaskSelected, 'uiView');
-		// const element = this.findElement('uiView');
-		// const noTaskSelected = new NoTaskSelected({target: element});
-		// (element as any).component = noTaskSelected;
-		// component.on('destroy', function() {
-		// 	noTaskSelected.destroy();
-		// });
 	}
 }

@@ -1,6 +1,6 @@
-import Component from './tasks.html'
-import NoTaskSelected from './no-task-selected.html'
-
+import Component from './tasks.html';
+import NoTaskSelected from './no-task-selected.html';
+import {allWithAsync} from '../../../handlers/async';
 import AppChildHandler from '../../app-child-handler';
 
 const model = require('../../../../modules/model.js')
@@ -8,16 +8,6 @@ const all = require('async-all')
 import roadtrip from 'roadtrip';
 
 // const UUID_V4_REGEX = '[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}'
-
-const allWithAsync = (...listOfPromises) => {
-    return new Promise(async (resolve, reject) => {
-        let results = []
-        for (let promise of listOfPromises.map(Promise.resolve, Promise)) {
-            results.push(await promise.then(async resolvedData => await resolvedData, reject))
-            if (results.length === listOfPromises.length) resolve(results)
-        }
-    })
-};
 
 export default class TasksHandler extends AppChildHandler {
 
@@ -38,16 +28,14 @@ export default class TasksHandler extends AppChildHandler {
         super(path, Component, parent, options);
 	}
 
-    protected beforeEnter(current, previous) {
-        super.beforeEnter(current, previous);                
-        if (this.isLoggedIn()) {
-            const topicId = current.params.topicId;
-            const topic = model.getTopicAsync.bind(null, topicId);
-            const tasks = model.getTasksAsync.bind(null, topicId);
-            roadtrip.data = allWithAsync(topic(), tasks(), topicId);
-        }
+    protected async getData() {
+        const topicId = this.routeData.params.topicId;
+        const topic = model.getTopicAsync.bind(null, topicId);
+        const tasks = model.getTasksAsync.bind(null, topicId);
+        return allWithAsync(topic(), tasks(), topicId)
+            .then(data => ({ topic: data[0], tasks: data[1], topicId: data[2] }));
     }
-
+    
  	public activate(component, current) {
         component.on('newTaskKeyup', function(e) {
             const topicId = component.get('topicId')
@@ -86,21 +74,20 @@ export default class TasksHandler extends AppChildHandler {
         if (el) { 
             el.focus() 
         }
-        component.set({isActivated: true});
     }
     
-	protected enter(current, previous) {
-        const self = this;
-        if (roadtrip.data.then) {
-            return roadtrip.data.then(data => {
-                console.log('resolvedData', data);
-                // this.createParent();        
-                super.enter(current, previous);
-                this.component.set({ topic: data[0], tasks: data[1], topicId: data[2] });
-                // if (!this.isSameHandler(current, previous)) {
-                //     this.activateOnce(this.component, current);
-                // }
-            }, rejectionReason => console.log('reason:', rejectionReason)) // reason: rejected!
-        }
-    }
+	// protected enter(current, previous) {
+    //     const self = this;
+    //     if (roadtrip.data.then) {
+    //         return roadtrip.data.then(data => {
+    //             console.log('resolvedData', data);
+    //             // this.createParent();        
+    //             super.enter(current, previous);
+    //             this.component.set({ topic: data[0], tasks: data[1], topicId: data[2] });
+    //             // if (!this.isSameHandler(current, previous)) {
+    //             //     this.activateOnce(this.component, current);
+    //             // }
+    //         }, rejectionReason => console.log('reason:', rejectionReason)) // reason: rejected!
+    //     }
+    // }
 }

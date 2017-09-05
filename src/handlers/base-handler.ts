@@ -24,7 +24,7 @@ export default abstract class BaseHandler {
 
     protected routeData;
     
-    protected options;
+    protected options?: IOptions;
 
     protected reset: (newData) => void;
 
@@ -65,7 +65,7 @@ export default abstract class BaseHandler {
                         const el = owner.querySelector(current.handler.target);
                         if (el === previous.handler.parent.element) {
                             console.warn('Destroy same element');
-                            previous.handler.parent.destroy(); 
+                            previous.handler.parent.destroy();
                         }   
                     }
                 }                          
