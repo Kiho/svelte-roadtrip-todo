@@ -15,8 +15,4 @@ export default class AppChildHandler extends GenericHandler {
 			roadtrip.goto('/app/topics');
 		}        
 	}	
-
-	protected enter(current, previous) {	
-		super.enter(current, previous);
-	}
 }

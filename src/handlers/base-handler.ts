@@ -87,28 +87,17 @@ export default abstract class BaseHandler {
         if (!this.component) {            
             this.element = this.findMountTo(this.parent, this.target);
             options.target = this.element;
+            const oldComponent = (this.element as any).component;
+            if (oldComponent) {
+                oldComponent.destroy();
+            }
             this.component = construct(this.ctor, options);
+            (this.element as any).component = this.component;
             console.log('generic - create', this.component);            
             return { component: this.component, result: true }
         }
-        // else if(this.reset) {
-        //     this.reset(options);
-        // }
         return  { component: this.component, result: false }
     }
-
-    // protected createComponentResetter(component) {
-    //     const originalData = Object.assign({ }, component.get());     
-
-    //     return function reset(newData) {
-    //         const resetObject = Object.create(null)
-    //         Object.keys(component.get()).forEach(key => {
-    //             resetObject[key] = undefined
-    //         })
-    //         Object.assign(resetObject, originalData, newData)
-    //         component.set(resetObject)
-    //     }
-    // }
 
     protected destroy() {
         if (this.component) {
@@ -116,6 +105,15 @@ export default abstract class BaseHandler {
             this.component.destroy();
             this.component = null;
         }
+    }
+
+    protected addChildComponent = (component, ctor, elementId) => {
+		const element = this.findElement(elementId);
+		const child = new ctor({target: element});
+		(element as any).component = child;
+		component.on('destroy', function() {
+            child.destroy();
+        });
     }
 
     public findElement(selector?) {

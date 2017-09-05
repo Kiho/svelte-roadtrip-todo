@@ -4,6 +4,7 @@ import LoginHandler from './login/login-handler';
 import AppHandler from './app/app-handler';
 import AppChildHandler from './app/app-child-handler';
 import TopicsHandler from './app/topics/topics-handler';
+import NoTaskSelected from './app/topics/tasks/no-task-selected.html';
 import TasksHandler from './app/topics/tasks/tasks-handler';
 
 import Login from './login/login.html';
@@ -23,6 +24,7 @@ export default class Routes {
     appHandler;
     aboutHandler;
     topicsHandler;
+    noTaskSelectedHandler;
     tasksHandler;
 
     constructor(target: string) {
@@ -36,6 +38,7 @@ export default class Routes {
             this.loginHandler = new LoginHandler('/login', target),
             this.aboutHandler = new AppChildHandler('/app/about', About, this.appHandler),
             this.topicsHandler = new TopicsHandler('/app/topics', this.appHandler),
+            // this.noTaskSelectedHandler = new AppChildHandler('/app/topics', NoTaskSelected, this.topicsHandler),
             this.tasksHandler = new TasksHandler('/app/topics/:topicId',this.topicsHandler)
         ];
 

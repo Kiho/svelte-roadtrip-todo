@@ -94,8 +94,12 @@ export default class TopicsHandler extends AppChildHandler {
 			});
 		});
 
-		if (current) {
-			current.destroyOnLeave = new NoTaskSelected({target: this.findElement('uiView')});
-		}
+		this.addChildComponent(component, NoTaskSelected, 'uiView');
+		// const element = this.findElement('uiView');
+		// const noTaskSelected = new NoTaskSelected({target: element});
+		// (element as any).component = noTaskSelected;
+		// component.on('destroy', function() {
+		// 	noTaskSelected.destroy();
+		// });
 	}
 }
