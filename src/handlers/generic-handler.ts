@@ -17,7 +17,7 @@ export default abstract class GenericHandler extends BaseHandler {
     }
 
     protected beforeEnter(current, previous) {        
-        console.warn('beforeEnter', current, previous);
+        console.log('beforeEnter', current, previous);
         current.handler = this;
         this.routeData = current;              
         if (!this.isLoggedIn()) {
@@ -29,15 +29,12 @@ export default abstract class GenericHandler extends BaseHandler {
         this.destroyPrevious(current, previous);
         console.log('Entered!', current);
         this.createParent(this);
-        // this.options.data = this.getData();
-        // this.create(this.options);
         this.getData().then((data) => {
             if (data) this.options.data = data;                    
             this.create(this.options);
             this.activateOnce(this.component);
             roadtrip.routing.events.emit('enter', current);
-        }); 
-        // this.activateOnce(this.component);                
+        });              
     }
 
     protected leave(current, previous) {
@@ -60,9 +57,9 @@ export default abstract class GenericHandler extends BaseHandler {
     protected createParent(self) {
 		if (this.parent && !this.parent.component) {
 			this.parent.createParent(self);
-        }
-        if (!this.component) {
-            if (self !== this) {
+        }        
+        if (self !== this) {
+            if (!this.component) {
                 const that = this;
                 const destroy = self.destroy;
                 self.destroy = function() {
@@ -79,14 +76,14 @@ export default abstract class GenericHandler extends BaseHandler {
         }       
     }
     
-    public activateOnce(component, current?) {
+    public activateOnce(component) {
         if (!this.component.get('isActivated')) {
-			this.activate(component, current);
+			this.activate(component);
             component.set({isActivated: true});
         }
     }
 
-    public activate(component, current?) {
+    public activate(component) {
         console.warn('activate generic handler');
     }
 }

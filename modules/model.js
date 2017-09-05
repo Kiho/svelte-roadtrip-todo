@@ -20,6 +20,8 @@ emitter.saveTask = saveTask
 
 emitter.getTopicAsync = getTopicAsync
 emitter.getTasksAsync = getTasksAsync
+emitter.getTopicsAsync = getTopicsAsync;
+emitter.getTasksMapAsync = getTasksMapAsync;
 
 function getTopicAsync(topicId) {
 	return new Promise((resolve, reject) => setTimeout(resolve, artificialDelay, getTopicSync(topicId)))
@@ -27,6 +29,14 @@ function getTopicAsync(topicId) {
 
 function getTasksAsync(topicId) {
 	return new Promise((resolve, reject) => setTimeout(resolve, artificialDelay, getTasksSync(topicId)))
+}
+
+function getTasksMapAsync(topics) {
+	return new Promise((resolve, reject) => setTimeout(resolve, artificialDelay, getTasksMap()))
+}
+
+function getTopicsAsync(topicId) {
+	return new Promise((resolve, reject) => setTimeout(resolve, artificialDelay, getTopicsSync()))
 }
 
 function getTopics(cb) {

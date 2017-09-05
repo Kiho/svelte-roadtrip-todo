@@ -131,5 +131,5 @@ export default abstract class BaseHandler {
 
     protected abstract leave(current, previous);
 
-    protected abstract activate(component, current?)
+    protected abstract activate(component);
 }

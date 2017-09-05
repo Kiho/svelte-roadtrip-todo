@@ -2,10 +2,9 @@ import Component from './tasks.html';
 import NoTaskSelected from './no-task-selected.html';
 import {allWithAsync} from '../../../handlers/async';
 import AppChildHandler from '../../app-child-handler';
-
-const model = require('../../../../modules/model.js')
-const all = require('async-all')
 import roadtrip from 'roadtrip';
+
+const model = require('../../../../modules/model.js');
 
 // const UUID_V4_REGEX = '[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}'
 
@@ -36,7 +35,7 @@ export default class TasksHandler extends AppChildHandler {
             .then(data => ({ topic: data[0], tasks: data[1], topicId: data[2] }));
     }
     
- 	public activate(component, current) {
+ 	public activate(component) {
         component.on('newTaskKeyup', function(e) {
             const topicId = component.get('topicId')
             const newTaskName = component.get('newTaskName')
@@ -75,19 +74,4 @@ export default class TasksHandler extends AppChildHandler {
             el.focus() 
         }
     }
-    
-	// protected enter(current, previous) {
-    //     const self = this;
-    //     if (roadtrip.data.then) {
-    //         return roadtrip.data.then(data => {
-    //             console.log('resolvedData', data);
-    //             // this.createParent();        
-    //             super.enter(current, previous);
-    //             this.component.set({ topic: data[0], tasks: data[1], topicId: data[2] });
-    //             // if (!this.isSameHandler(current, previous)) {
-    //             //     this.activateOnce(this.component, current);
-    //             // }
-    //         }, rejectionReason => console.log('reason:', rejectionReason)) // reason: rejected!
-    //     }
-    // }
 }

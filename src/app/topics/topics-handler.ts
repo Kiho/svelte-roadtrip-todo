@@ -1,7 +1,7 @@
-import all from 'async-all'
 import Component from './topics.html';
 import NoTaskSelected from './tasks/no-task-selected.html';
 import roadtrip from 'roadtrip';
+import {allWithAsync} from '../../handlers/async';
 import GenericHandler from '../../handlers/generic-handler';
 import AppChildHandler from '../app-child-handler';
 
@@ -9,37 +9,21 @@ declare var process;
 
 const model = require('../../../modules/model.js')
 
-function getTopicsSync() {
-	return JSON.parse(localStorage.getItem('topics'))
-}
-
-function getTasksSync(topicId) {
-	var json = localStorage.getItem(topicId)
-	return json ? JSON.parse(localStorage.getItem(topicId)) : []
-}
-
-function getTasksMap(topics) {
-	return topics.reduce(function(map, topic) {
-		var topicId = topic.id
-		map[topicId] = getTasksSync(topicId)
-		return map
-	}, {})
-}
-
 export default class TopicsHandler extends AppChildHandler {
     constructor(path, parent) {
 		super(path, Component, parent);
 	}
 	
- 	public activate(component, current) {
-		const topics = getTopicsSync();
-		const tasks = getTasksMap(topics);
+	protected async getData() {
+        const topics = model.getTopicsAsync();
+        const tasks = model.getTasksMapAsync(topics);
+        return allWithAsync(topics, tasks)
+            .then(data => ({ topics: data[0], tasks: data[1] }));
+	}
+	
+ 	public activate(component) {
 		const self = this;
-
-		component.set({ 
-			topics: topics,
-			tasks: tasks,
-		});
+		const { topics } = component.get();
 
 		function setFocusOnAddTopicEdit() {
 			process.nextTick(function() {

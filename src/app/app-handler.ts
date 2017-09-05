@@ -15,7 +15,7 @@ export default class AppHandler extends AppChildHandler {
 	}
 	
 	protected async getData() {
-		return { data: { currentUser: model.getCurrentUser() } };
+		return  { currentUser: model.getCurrentUser() };
 	}
 
 	protected logout() {
@@ -23,20 +23,11 @@ export default class AppHandler extends AppChildHandler {
 		roadtrip.goto('/login');
 	}
 
-	// protected beforeEnter(current, previous) {
-	// 	if (!this.isLoggedIn()) {
-	// 		roadtrip.goto('/login');
-	// 	} else if (current.pathname === '' || current.pathname === 'app') {
-	// 		roadtrip.goto('/app/topics');
-	// 	}
-	// }
-	
 	public activate(component) {
 		component.on('logout', this.logout);
 	}
 
 	protected enter(current, previous) {
-		this.options = { data: { currentUser: model.getCurrentUser() } };
 		console.log('Entered App!', current);
 		super.enter(current, previous);
 	}
