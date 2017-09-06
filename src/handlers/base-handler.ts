@@ -38,39 +38,51 @@ export default abstract class BaseHandler {
         this.leave = this.leave.bind(this);
     }
 
-    protected isSameHandler = (current, previous) => {
-        return  current && previous && (current.handler === previous.handler && previous.handler);
-    }
+    // protected isSameHandler = (current, previous) => {
+    //     return  current && previous && (current.handler === previous.handler && previous.handler);
+    // }
+
+    // protected destroyPrevious  = (current, previous) => {        
+    //     if (current && previous) {                 
+    //         if (previous.destroy) {
+    //             if (current.pathname.indexOf(previous.pathname ? previous.pathname : 'app') === -1 ) {
+    //                 previous.destroy();
+    //             } else if (current.handler.findElement() == previous.handler.findElement()) {
+    //                 previous.destroy();
+    //             }
+    //         }
+    //         if (current.handler !== previous.handler && previous.handler) {
+    //             if (current.handler.path === previous.handler.path) {
+    //                 previous.destroy();
+    //             }
+    //             if (previous.handler.parent) {
+    //                 if (previous.handler.parent.routeData) {
+    //                     previous.handler.parent.destroyPrevious(current, previous.handler.parent.routeData);
+    //                 }
+    //                 if (current.handler && previous.handler && previous.handler.parent) {
+    //                     // this happens before creating component for current handler
+    //                     const owner = current.handler.element ? current.handler.element : document;
+    //                     const el = owner.querySelector(current.handler.target);
+    //                     if (el === previous.handler.parent.element) {
+    //                         console.warn('Destroy same element');
+    //                         previous.handler.parent.destroy();
+    //                     }   
+    //                 }
+    //             }                          
+    //         }                 
+    //     }		
+    // }
 
     protected destroyPrevious  = (current, previous) => {        
         if (current && previous) {                 
             if (previous.destroy) {
                 if (current.pathname.indexOf(previous.pathname ? previous.pathname : 'app') === -1 ) {
                     previous.destroy();
-                } else if (current.handler.findElement() == previous.handler.findElement()) {
+                } else if (current.handler.findElement() === previous.handler.findElement()) {
                     previous.destroy();
                 }
             }
-            if (current.handler !== previous.handler && previous.handler) {
-                if (current.handler.path === previous.handler.path) {
-                    previous.destroy();
-                }
-                if (previous.handler.parent) {
-                    if (previous.handler.parent.routeData) {
-                        previous.handler.parent.destroyPrevious(current, previous.handler.parent.routeData);
-                    }
-                    if (current.handler && previous.handler && previous.handler.parent) {
-                        // this happens before creating component for current handler
-                        const owner = current.handler.element ? current.handler.element : document;
-                        const el = owner.querySelector(current.handler.target);
-                        if (el === previous.handler.parent.element) {
-                            console.warn('Destroy same element');
-                            previous.handler.parent.destroy();
-                        }   
-                    }
-                }                          
-            }                 
-        }		
+        }
     }
 
     protected isLoggedIn() {
@@ -79,24 +91,36 @@ export default abstract class BaseHandler {
     }
 
     private findMountTo(parent, selector) {
-        let mountTo = parent ? parent.findElement(selector) : null;            
+        let mountTo = parent ? parent.findElement(selector) : null;
         return mountTo ?  mountTo : document.querySelector(selector);
     }
 
     public create(options) {
-        if (!this.component) {            
-            this.element = this.findMountTo(this.parent, this.target);
-            options.target = this.element;
-            const oldComponent = (this.element as any).component;
-            if (oldComponent) {
-                oldComponent.destroy();
+        let state;
+        if (this.component) {
+            state = this.component.get();
+            if (!state) {
+                this.destroyChildren(this.path);
+                this.component = null;
             }
-            this.component = construct(this.ctor, options);
-            (this.element as any).component = this.component;
-            console.log('generic - create', this.component);            
-            return { component: this.component, result: true }
         }
-        return  { component: this.component, result: false }
+        if (!this.component) {         
+            this.element = this.findMountTo(this.parent, this.target);
+            if (this.element) {
+                options.target = this.element;
+                const oldComponent = (this.element as any).component;
+                if (oldComponent) {
+                    console.warn('generic - destroy old', oldComponent);   
+                    oldComponent.destroy();
+                    (this.element as any).component = null;
+                }
+                this.component = construct(this.ctor, options);
+                (this.element as any).component = this.component;
+                console.log('generic - create', this.component);            
+                return true;
+            }
+        }
+        return false;
     }
 
     protected destroy() {
@@ -127,8 +151,19 @@ export default abstract class BaseHandler {
         return null;        
     }
 
+    protected destroyChildren(path: string) {
+        const handlers: GenericHandler[] = (window as any).Routes.handlers;
+        handlers.forEach(h => {
+            if (path ==='/') path = '/app/';
+            if (h.path.indexOf(path) > -1) {
+                h.destroy();
+                h.component = null;
+            }
+        });
+    }
+    
     protected abstract enter(current, previous);
-
+    
     protected abstract leave(current, previous);
 
     protected abstract activate(component);

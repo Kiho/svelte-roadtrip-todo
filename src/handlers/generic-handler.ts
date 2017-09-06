@@ -17,7 +17,7 @@ export default abstract class GenericHandler extends BaseHandler {
     }
 
     protected beforeEnter(current, previous) {        
-        console.log('beforeEnter', current, previous);
+        // console.log('beforeEnter', current, previous);
         current.handler = this;
         this.routeData = current;              
         if (!this.isLoggedIn()) {
@@ -25,23 +25,24 @@ export default abstract class GenericHandler extends BaseHandler {
         }
     }
 
-    protected enter(current, previous) {
-        this.destroyPrevious(current, previous);
+    protected enter(current, previous) {        
         console.log('Entered!', current);
-        this.createParent(this);
+        this.createParent(this); 
         this.getData().then((data) => {
-            if (data) this.options.data = data;                    
-            this.create(this.options);
-            this.activateOnce(this.component);
+            if (data) this.options.data = data;
+            if (current.handler !== previous.handler) {
+                this.destroyPrevious(current, previous);
+                if (this.create(this.options)){
+                    this.activateOnce(this.component);
+                }
+            } else {
+                this.component.set(this.options.data);
+            }
             roadtrip.routing.events.emit('enter', current);
         });              
     }
 
     protected leave(current, previous) {
-		if (current.destroyOnLeave) {
-			current.destroyOnLeave.destroy();
-			current.destroyOnLeave = null;
-		}
         current.destroy = this.destroy;
         console.log('Left!', current);  
     }
@@ -59,14 +60,6 @@ export default abstract class GenericHandler extends BaseHandler {
 			this.parent.createParent(self);
         }        
         if (self !== this) {
-            if (!this.component) {
-                const that = this;
-                const destroy = self.destroy;
-                self.destroy = function() {
-                    destroy();
-                    that.destroy();
-                }
-            }
             this.getData().then((data) => {
                     if (data) this.options.data = data;                    
                     this.create(this.options);

@@ -17,7 +17,7 @@ import Tasks from './app/topics/tasks/tasks.html';
 export default class Routes {
     router;
 
-    handlers;
+    public handlers: GenericHandler[];
 
     loginHandler;
     appHandler;

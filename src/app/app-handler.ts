@@ -8,10 +8,8 @@ export default class AppHandler extends AppChildHandler {
     constructor(path, target) {
 		super(path, Component, null);
 
-		this.target= target;
-
+		this.target = target;
 		this.logout = this.logout.bind(this);
-		this.activate = this.activate.bind(this);
 	}
 	
 	protected async getData() {
