@@ -18,70 +18,31 @@ export default abstract class BaseHandler {
     
     public component;
 
+    public childComponents;
+
     public element: HTMLElement;
 
-    protected target = 'uiView';
+    protected targetName = 'uiView';
+
+    protected targetId: string;
 
     protected routeData;
     
     protected options?: IOptions;
 
-    protected reset: (newData) => void;
+    // protected reset: (newData) => void;
 
     constructor(public path, private ctor, public parent: GenericHandler) {
         this.create = this.create.bind(this);
         this.destroy = this.destroy.bind(this);
         this.findElement = this.findElement.bind(this);
-
-        this.activate = this.activate.bind(this);
-        this.enter = this.enter.bind(this);
-        this.leave = this.leave.bind(this);
     }
 
-    // protected isSameHandler = (current, previous) => {
-    //     return  current && previous && (current.handler === previous.handler && previous.handler);
-    // }
-
-    // protected destroyPrevious  = (current, previous) => {        
-    //     if (current && previous) {                 
-    //         if (previous.destroy) {
-    //             if (current.pathname.indexOf(previous.pathname ? previous.pathname : 'app') === -1 ) {
-    //                 previous.destroy();
-    //             } else if (current.handler.findElement() == previous.handler.findElement()) {
-    //                 previous.destroy();
-    //             }
-    //         }
-    //         if (current.handler !== previous.handler && previous.handler) {
-    //             if (current.handler.path === previous.handler.path) {
-    //                 previous.destroy();
-    //             }
-    //             if (previous.handler.parent) {
-    //                 if (previous.handler.parent.routeData) {
-    //                     previous.handler.parent.destroyPrevious(current, previous.handler.parent.routeData);
-    //                 }
-    //                 if (current.handler && previous.handler && previous.handler.parent) {
-    //                     // this happens before creating component for current handler
-    //                     const owner = current.handler.element ? current.handler.element : document;
-    //                     const el = owner.querySelector(current.handler.target);
-    //                     if (el === previous.handler.parent.element) {
-    //                         console.warn('Destroy same element');
-    //                         previous.handler.parent.destroy();
-    //                     }   
-    //                 }
-    //             }                          
-    //         }                 
-    //     }		
-    // }
-
     protected destroyPrevious  = (current, previous) => {        
-        if (current && previous) {                 
-            if (previous.destroy) {
-                if (current.pathname.indexOf(previous.pathname ? previous.pathname : 'app') === -1 ) {
-                    previous.destroy();
-                } else if (current.handler.findElement() === previous.handler.findElement()) {
-                    previous.destroy();
-                }
-            }
+        if (current && previous && previous.destroy) {                 
+            if (current.pathname.indexOf(previous.pathname ? previous.pathname : 'app') === -1 ) {
+                previous.destroy();
+            } 
         }
     }
 
@@ -96,31 +57,52 @@ export default abstract class BaseHandler {
     }
 
     public create(options) {
-        let state;
-        if (this.component) {
-            state = this.component.get();
-            if (!state) {
-                this.destroyChildren(this.path);
-                this.component = null;
+        // let state;
+        // if (this.component) {
+        //     state = this.component.get();
+        //     if (!state) {
+        //         console.warn('generic - destroyChildren', this.path); 
+        //         this.destroyChildren(this.path);
+        //         this.component = null;
+        //     }
+        // }
+        if (!this.component) {                 
+            this.targetId = this.getTargetId(this.parent, this).replace('#', '');    
+            this.element = this.findMountTo(this.parent, this.targetName);
+            if (document.getElementById(this.targetId)) {
+                this.destroyTarget(this.targetId);
             }
-        }
-        if (!this.component) {         
-            this.element = this.findMountTo(this.parent, this.target);
-            if (this.element) {
-                options.target = this.element;
-                const oldComponent = (this.element as any).component;
-                if (oldComponent) {
-                    console.warn('generic - destroy old', oldComponent);   
-                    oldComponent.destroy();
-                    (this.element as any).component = null;
-                }
-                this.component = construct(this.ctor, options);
-                (this.element as any).component = this.component;
-                console.log('generic - create', this.component);            
-                return true;
-            }
+            // const oldComponent = (this.element as any).component;
+            // if (oldComponent) {
+            //     console.warn('generic - destroy old', oldComponent);   
+            //     oldComponent.destroy();
+            //     (this.element as any).component = null;
+            // }
+            options.target = this.element;
+            this.component = construct(this.ctor, options);
+            this.element.id = this.targetId;
+            // (this.element as any).component = this.component;                    
+            return true;
         }
         return false;
+    }
+
+    protected getTargetId(parent: BaseHandler, handler: BaseHandler) {
+        let id = (parent ? parent.targetId + '_' : '') + handler.targetName;
+        console.log('targetId', id, handler.path);
+        return id;
+    }
+
+    protected destroyTarget(targetId: string) {        
+        this.routeHandlers.forEach(h => {
+            if (h.targetId && h.targetId.indexOf(targetId) > -1) {
+                if (h.component) {
+                    console.warn('base - destroyTarget', targetId);
+                    h.component.destroy();
+                    h.component = null;
+                }
+            }
+        });
     }
 
     protected destroy() {
@@ -131,10 +113,11 @@ export default abstract class BaseHandler {
         }
     }
 
-    protected addChildComponent = (component, ctor, elementId) => {
-		const element = this.findElement(elementId);
-		const child = new ctor({target: element});
-		(element as any).component = child;
+    protected addChildComponent = (component, ctor, target) => {
+		const element = this.findElement(target);
+        const child = new ctor({target: element});
+        this.childComponents = this.childComponents || [];
+        this.childComponents.push(child);
 		component.on('destroy', function() {
             child.destroy();
         });
@@ -151,20 +134,17 @@ export default abstract class BaseHandler {
         return null;        
     }
 
-    protected destroyChildren(path: string) {
-        const handlers: GenericHandler[] = (window as any).Routes.handlers;
-        handlers.forEach(h => {
-            if (path ==='/') path = '/app/';
-            if (h.path.indexOf(path) > -1) {
-                h.destroy();
-                h.component = null;
-            }
-        });
-    }
-    
-    protected abstract enter(current, previous);
-    
-    protected abstract leave(current, previous);
+    // protected destroyChildren(path: string) {        
+    //     this.routeHandlers.forEach(h => {
+    //         if (path ==='/') path = '/app/';
+    //         if (h.path.indexOf(path) > -1) {
+    //             h.destroy();
+    //             h.component = null;
+    //         }
+    //     });
+    // }
 
-    protected abstract activate(component);
+    protected get routeHandlers() : GenericHandler[]{
+        return (window as any).Routes.handlers;
+    }
 }

@@ -7,7 +7,7 @@ const model = require('../../modules/model.js');
 export default class LoginHandler extends GenericHandler {
     component;
 
-    constructor(path, protected target) {
+    constructor(path, protected targetName) {
         super(path, Component, null);
 
         this.login = this.login.bind(this);

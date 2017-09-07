@@ -7,6 +7,7 @@ export default abstract class GenericHandler extends BaseHandler {
         super(path, ctor, parent);
         
         this.beforeEnter = this.beforeEnter.bind(this);
+        this.activate = this.activate.bind(this);
         this.enter = this.enter.bind(this);
         this.leave = this.leave.bind(this);
         this.getData = this.getData.bind(this);
@@ -65,7 +66,7 @@ export default abstract class GenericHandler extends BaseHandler {
                     this.create(this.options);
                     this.activateOnce(this.component);
                 }               
-            )            
+            );          
         }       
     }
     

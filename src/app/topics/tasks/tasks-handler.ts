@@ -36,6 +36,13 @@ export default class TasksHandler extends AppChildHandler {
     }
     
  	public activate(component) {
+         
+        if (this.parent.childComponents) {
+            this.parent.childComponents.forEach(child => {
+                child.destroy();
+            });
+        }
+         
         component.on('newTaskKeyup', function(e) {
             const topicId = component.get('topicId')
             const newTaskName = component.get('newTaskName')

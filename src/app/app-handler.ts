@@ -8,7 +8,7 @@ export default class AppHandler extends AppChildHandler {
     constructor(path, target) {
 		super(path, Component, null);
 
-		this.target = target;
+		this.targetName = target;
 		this.logout = this.logout.bind(this);
 	}
 	

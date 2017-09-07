@@ -3,6 +3,6 @@ interface ObjectConstructor {
 }
 
 interface IOptions {
-    target?: Element
+    target?: HTMLElement
     data?: any;
 }
