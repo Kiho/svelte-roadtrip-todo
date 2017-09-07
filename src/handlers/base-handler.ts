@@ -30,20 +30,10 @@ export default abstract class BaseHandler {
     
     protected options?: IOptions;
 
-    // protected reset: (newData) => void;
-
     constructor(public path, private ctor, public parent: GenericHandler) {
         this.create = this.create.bind(this);
         this.destroy = this.destroy.bind(this);
         this.findElement = this.findElement.bind(this);
-    }
-
-    protected destroyPrevious  = (current, previous) => {        
-        if (current && previous && previous.destroy) {                 
-            if (current.pathname.indexOf(previous.pathname ? previous.pathname : 'app') === -1 ) {
-                previous.destroy();
-            } 
-        }
     }
 
     protected isLoggedIn() {
@@ -57,34 +47,26 @@ export default abstract class BaseHandler {
     }
 
     public create(options) {
-        // let state;
-        // if (this.component) {
-        //     state = this.component.get();
-        //     if (!state) {
-        //         console.warn('generic - destroyChildren', this.path); 
-        //         this.destroyChildren(this.path);
-        //         this.component = null;
-        //     }
-        // }
         if (!this.component) {                 
             this.targetId = this.getTargetId(this.parent, this).replace('#', '');    
             this.element = this.findMountTo(this.parent, this.targetName);
             if (document.getElementById(this.targetId)) {
                 this.destroyTarget(this.targetId);
             }
-            // const oldComponent = (this.element as any).component;
-            // if (oldComponent) {
-            //     console.warn('generic - destroy old', oldComponent);   
-            //     oldComponent.destroy();
-            //     (this.element as any).component = null;
-            // }
             options.target = this.element;
             this.component = construct(this.ctor, options);
-            this.element.id = this.targetId;
-            // (this.element as any).component = this.component;                    
+            this.element.id = this.targetId;                   
             return true;
         }
         return false;
+    }
+
+    protected destroyPrevious  = (current, previous) => {        
+        if (current && previous && previous.destroy) {                 
+            if (current.pathname.indexOf(previous.pathname ? previous.pathname : 'app') === -1 ) {
+                previous.destroy();
+            } 
+        }
     }
 
     protected getTargetId(parent: BaseHandler, handler: BaseHandler) {
@@ -105,9 +87,8 @@ export default abstract class BaseHandler {
         });
     }
 
-    protected destroy() {
+    protected destroy(handler: GenericHandler) {
         if (this.component) {
-            console.log('generic - destroy', this.component); 
             this.component.destroy();
             this.component = null;
         }
@@ -116,6 +97,7 @@ export default abstract class BaseHandler {
     protected addChildComponent = (component, ctor, target) => {
 		const element = this.findElement(target);
         const child = new ctor({target: element});
+        // element.id = this.getTargetId(this, this).replace('#', '');
         this.childComponents = this.childComponents || [];
         this.childComponents.push(child);
 		component.on('destroy', function() {
@@ -133,16 +115,6 @@ export default abstract class BaseHandler {
         }
         return null;        
     }
-
-    // protected destroyChildren(path: string) {        
-    //     this.routeHandlers.forEach(h => {
-    //         if (path ==='/') path = '/app/';
-    //         if (h.path.indexOf(path) > -1) {
-    //             h.destroy();
-    //             h.component = null;
-    //         }
-    //     });
-    // }
 
     protected get routeHandlers() : GenericHandler[]{
         return (window as any).Routes.handlers;

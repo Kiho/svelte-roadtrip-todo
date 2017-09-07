@@ -3,4 +3,5 @@ dist/
 node_modules/
 ./vs
 ./vscode
-npm-debug.*.*
+npm-debug.log
+npm-debug.log.*
