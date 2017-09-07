@@ -11,7 +11,7 @@ export default class AppChildHandler extends GenericHandler {
 	protected beforeEnter(current, previous) {
 		if (!this.isLoggedIn()) {
 			roadtrip.goto('/login');
-		} else if (current.pathname === '' || current.pathname === 'app') {
+		} else if (current.pathname === '' || current.pathname === 'app' || current.pathname === 'app/topics/') {
 			roadtrip.goto('/app/topics');
 		}   
 		super.beforeEnter(current, previous);     
