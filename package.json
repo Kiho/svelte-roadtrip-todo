@@ -10,8 +10,8 @@
     "serve": "live-server --cors --port=8084 --watch=./dist/bundle.js,./index.html dist",
     "watch": "webpack -w",
     "serve:dev": "webpack-dev-server --hot --inline",
-    "dev": "cross-env NODE_ENV=development && npm run serve:dev",
-    "dev:w": "concurrently \"npm run watch\"  \"npm run dev\" "
+    "dev1": "cross-env NODE_ENV=development && npm run serve:dev",
+    "dev": "concurrently \"npm run watch\"  \"npm run dev1\" "
   },
   "keywords": [],
   "author": {
