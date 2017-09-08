@@ -108,4 +108,8 @@ export default abstract class BaseHandler {
     protected get routeHandlers() : GenericHandler[]{
         return (window as any).Routes.handlers;
     }
+
+    protected setCurrentPath(component: Svelte, routeData) {
+        component.set({currentPath: routeData ? routeData.pathname : ''});
+    }    
 }

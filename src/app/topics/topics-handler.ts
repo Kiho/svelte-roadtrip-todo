@@ -46,9 +46,14 @@ export default class TopicsHandler extends AppChildHandler {
 		}
 
 		model.on('tasks saved', recalculateTasksLeftToDoInTopic);
+		roadtrip.routing.events.on('enter', routeData => {       
+			this.setCurrentPath(component, routeData);
+		});		
 		component.on('destroy', () => {
 			model.removeListener('tasks saved', recalculateTasksLeftToDoInTopic);
-			console.log('model.removeListener - tasks saved'); 
+			console.log('model.removeListener - tasks saved');
+			roadtrip.routing.events.removeListener('enter', this.setCurrentPath);
+			console.log('roadtrip.routing.events.removeListener - enter');
 		});
 
 		topics.forEach(function(topic) {

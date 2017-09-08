@@ -37,10 +37,5 @@
         components: {
             RouterLink
         },
-        oncreate () {
-            roadtrip.routing.events.on('enter', routeData => {       
-                this.set({currentPath: routeData ? routeData.pathname : ''});
-            });
-		}, 
     }
 </script>

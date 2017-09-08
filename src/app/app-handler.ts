@@ -23,6 +23,14 @@ export default class AppHandler extends AppChildHandler {
 
 	public activate(component) {
 		component.on('logout', this.logout);
+		
+		roadtrip.routing.events.on('enter', routeData => {       
+			this.setCurrentPath(component, routeData);
+		});		
+		component.on('destroy', () => {
+			roadtrip.routing.events.removeListener('enter', this.setCurrentPath);
+			console.log('roadtrip.routing.events.removeListener - enter');
+		});
 	}
 
 	// protected enter(current, previous) {

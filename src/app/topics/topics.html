@@ -4,7 +4,7 @@
 			<div class="list-group">
 				{{#each topics as topic}}
 					<RouterLink to={{ "/app/topics/" + topic.id }} location={{currentPath}} calssName="list-group-item" >
-						{{topic.name}} <span class="badge">{{ tasksUndone[topic.id] }}</span>
+						{{topic.name}} <span class="badge">{{ showNumber(tasksUndone[topic.id]) }}</span>
 					</RouterLink>
 				{{/each}}
 			</div>
@@ -42,7 +42,8 @@
             RouterLink
         },
 		helpers: {
-			hiddenIfNot: x => x ? '' : 'hidden'
+			hiddenIfNot: x => x ? '' : 'hidden',
+			showNumber: x => x ? x : 0
 		},
 		data: () => ({
 			topics: [],
@@ -51,10 +52,5 @@
 			newTopic: '',
 			currentPath: '',
 		}),
-		oncreate () {
-            roadtrip.routing.events.on('enter', routeData => {       
-                this.set({currentPath: routeData ? routeData.pathname : ''});
-            });
-		},
 	}
 </script>
