@@ -1,5 +1,4 @@
 import Component from './topics.html';
-import NoTaskSelected from './tasks/no-task-selected.html';
 import roadtrip from 'roadtrip';
 import {allWithAsync} from '../../handlers/async';
 import GenericHandler from '../../handlers/generic-handler';
@@ -82,7 +81,5 @@ export default class TopicsHandler extends AppChildHandler {
 				addingTopic: !addingTopic
 			});
 		});
-
-		// this.addChildComponent(component, NoTaskSelected, 'uiView');
 	}
 }
