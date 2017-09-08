@@ -25,8 +25,8 @@ export default class AppHandler extends AppChildHandler {
 		component.on('logout', this.logout);
 	}
 
-	protected enter(current, previous) {
-		console.log('Entered App!', current);
-		super.enter(current, previous);
-	}
+	// protected enter(current, previous) {
+	// 	console.log('Entered App!', current);
+	// 	super.enter(current, previous);
+	// }
 }

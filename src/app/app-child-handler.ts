@@ -11,9 +11,11 @@ export default class AppChildHandler extends GenericHandler {
 	protected beforeEnter(current, previous) {
 		if (!this.isLoggedIn()) {
 			roadtrip.goto('/login');
-		} else if (current.pathname === '' || current.pathname === 'app' || current.pathname === 'app/topics/') {
+		} else if (current.pathname === '' || current.pathname === 'app') {
 			roadtrip.goto('/app/topics');
-		}   
+		} else if (current.pathname === 'app/topics') {
+			roadtrip.goto( '/app/topics/', { invisible: true });
+		}  
 		super.beforeEnter(current, previous);     
 	}	
 }

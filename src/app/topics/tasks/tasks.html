@@ -1,3 +1,4 @@
+{{#if topic}}
 <h1>{{topic.name}}</h1>
 <table class="table table-striped">
 	<thead>
@@ -52,7 +53,9 @@
 		</tr>
 	</tbody>
 </table>
-
+{{else}}
+<NoTaskSelected />
+{{/if}}
 <style>
 	.done-checkbox::before {
 		margin-left: .2em;
@@ -60,7 +63,12 @@
 </style>
 
 <script>
+import NoTaskSelected from './no-task-selected.html';
+
 export default {
+	components: {
+		NoTaskSelected
+	},
 	data: () => ({
 		newTaskName: '',
 		topic: {},

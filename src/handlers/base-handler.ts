@@ -79,8 +79,8 @@ export default abstract class BaseHandler {
         this.routeHandlers.forEach(h => {
             if (h.targetId && h.targetId.indexOf(targetId) > -1) {
                 if (h.component) {
-                    console.warn('base - destroyTarget', targetId);
                     h.component.destroy();
+                    // console.warn('base - destroyTarget', targetId, h.component);
                     h.component = null;
                 }
             }
@@ -92,17 +92,6 @@ export default abstract class BaseHandler {
             this.component.destroy();
             this.component = null;
         }
-    }
-
-    protected addChildComponent = (component, ctor, target) => {
-		const element = this.findElement(target);
-        const child = new ctor({target: element});
-        // element.id = this.getTargetId(this, this).replace('#', '');
-        this.childComponents = this.childComponents || [];
-        this.childComponents.push(child);
-		component.on('destroy', function() {
-            child.destroy();
-        });
     }
 
     public findElement(selector?) {

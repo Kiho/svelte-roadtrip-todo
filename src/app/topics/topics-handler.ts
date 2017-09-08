@@ -78,6 +78,6 @@ export default class TopicsHandler extends AppChildHandler {
 			});
 		});
 
-		this.addChildComponent(component, NoTaskSelected, 'uiView');
+		// this.addChildComponent(component, NoTaskSelected, 'uiView');
 	}
 }
