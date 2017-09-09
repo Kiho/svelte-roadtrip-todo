@@ -16,8 +16,8 @@ export default class TopicsHandler extends AppChildHandler {
 	protected async getData() {
         const topics = model.getTopicsAsync();
         const tasks = model.getTasksMapAsync(topics);
-        return allWithAsync(topics, tasks)
-            .then(data => ({ topics: data[0], tasks: data[1] }));
+		return allWithAsync(topics, tasks)
+			.then(data => ({ topics: data[0], tasks: data[1] }));
 	}
 	
  	public activate(component) {

@@ -78,19 +78,15 @@ export default abstract class BaseHandler {
     protected destroyTarget(targetId: string) {        
         this.routeHandlers.forEach(h => {
             if (h.targetId && h.targetId.indexOf(targetId) > -1) {
-                if (h.component) {
-                    h.component.destroy();
-                    // console.warn('base - destroyTarget', targetId, h.component);
-                    h.component = null;
-                }
+                this.destroy(h);
             }
         });
     }
 
     protected destroy(handler: GenericHandler) {
-        if (this.component) {
-            this.component.destroy();
-            this.component = null;
+        if (handler.component) {
+            handler.component.destroy();
+            handler.component = null;
         }
     }
 

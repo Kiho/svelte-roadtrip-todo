@@ -1,6 +1,5 @@
 import Component from './app.html'
 import roadtrip from 'roadtrip';
-// import GenericHandler from '../handlers/generic-handler';
 import AppChildHandler from './app-child-handler';
 const model = require('../../modules/model.js');
 
@@ -32,9 +31,4 @@ export default class AppHandler extends AppChildHandler {
 			console.log('roadtrip.routing.events.removeListener - enter');
 		});
 	}
-
-	// protected enter(current, previous) {
-	// 	console.log('Entered App!', current);
-	// 	super.enter(current, previous);
-	// }
 }

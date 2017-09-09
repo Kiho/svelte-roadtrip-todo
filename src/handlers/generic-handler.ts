@@ -30,7 +30,7 @@ export default abstract class GenericHandler extends BaseHandler {
         console.log('Entered!', current);
         this.createParent(this); 
         this.getData().then((data) => {
-            if (data) this.options.data = data;
+            this.options.data = data;
             if (current.handler !== previous.handler) {
                 this.destroyPrevious(current, previous);
                 if (this.create(this.options)){
@@ -44,7 +44,7 @@ export default abstract class GenericHandler extends BaseHandler {
     }
 
     protected leave(current, previous) {
-        current.destroy = this.destroy;
+        current.destroy = this.destroy.bind(this, this.component);
         console.log('Left!', current);  
     }
 
@@ -62,7 +62,7 @@ export default abstract class GenericHandler extends BaseHandler {
         }        
         if (self !== this) {
             this.getData().then((data) => {
-                    if (data) this.options.data = data;                    
+                    this.options.data = data;                    
                     this.create(this.options);
                     this.activateOnce(this.component);
                 }               
