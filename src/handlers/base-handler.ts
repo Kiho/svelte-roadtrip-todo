@@ -102,7 +102,7 @@ export default abstract class BaseHandler {
     }
 
     protected get routeHandlers() : GenericHandler[]{
-        return (window as any).Routes.handlers;
+        return roadtrip.routing.routes.handlers;
     }
 
     protected setCurrentPath(component: Svelte, routeData) {
