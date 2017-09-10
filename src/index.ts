@@ -10,5 +10,5 @@ roadtrip.routing = Events;
 
 document.addEventListener('DOMContentLoaded', main);
 function main () {
-  roadtrip.routing.routes = new Routes('#app-root');
+    roadtrip.routing.routes = new Routes('#app-root');
 }

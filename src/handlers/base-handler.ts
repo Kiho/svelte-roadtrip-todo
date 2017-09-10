@@ -48,7 +48,7 @@ export default abstract class BaseHandler {
 
     public create(options) {
         if (!this.component) {                 
-            this.targetId = this.getTargetId(this.parent, this).replace('#', '');    
+            this.targetId = this.getTargetId(this.parent, this);    
             this.element = this.findMountTo(this.parent, this.targetName);
             if (document.getElementById(this.targetId)) {
                 this.destroyTarget(this.targetId);
@@ -71,8 +71,8 @@ export default abstract class BaseHandler {
 
     protected getTargetId(parent: BaseHandler, handler: BaseHandler) {
         let id = (parent ? parent.targetId + '_' : '') + handler.targetName;
-        console.log('targetId', id, handler.path);
-        return id;
+        // console.log('targetId', id, handler.path);
+        return id.replace('#', '');
     }
 
     protected destroyTarget(targetId: string) {        

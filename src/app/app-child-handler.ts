@@ -14,7 +14,7 @@ export default class AppChildHandler extends GenericHandler {
 		} else if (current.pathname === '' || current.pathname === 'app') {
 			roadtrip.goto('/app/topics');
 		} else if (current.pathname === 'app/topics') {
-			roadtrip.goto( '/app/topics/', { invisible: true });
+			roadtrip.goto( '/app/topics/', { invisible: true, replaceState: true });
 		}  
 		super.beforeEnter(current, previous);     
 	}	

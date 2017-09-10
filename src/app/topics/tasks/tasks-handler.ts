@@ -1,6 +1,6 @@
 import Component from './tasks.html';
 import NoTaskSelected from './no-task-selected.html';
-import {allWithAsync} from '../../../handlers/async';
+import { allWithMapAsync } from '../../../handlers/async';
 import AppChildHandler from '../../app-child-handler';
 import roadtrip from 'roadtrip';
 
@@ -29,10 +29,9 @@ export default class TasksHandler extends AppChildHandler {
 
     protected async getData() {
         const topicId = this.routeData.params.topicId;
-        const topic = model.getTopicAsync.bind(null, topicId);
-        const tasks = model.getTasksAsync.bind(null, topicId);
-        return allWithAsync(topic(), tasks(), topicId)
-            .then(data => ({ topic: data[0], tasks: data[1], topicId: data[2] }));
+        const topic = model.getTopicAsync(topicId);
+        const tasks = model.getTasksAsync(topicId);
+        return allWithMapAsync({topic, tasks, topicId});
     }
     
  	public activate(component) {

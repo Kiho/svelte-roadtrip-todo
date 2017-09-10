@@ -21,14 +21,13 @@ export default class AppHandler extends AppChildHandler {
 	}
 
 	public activate(component) {
+		const setCurrentPath = x => this.setCurrentPath(component, x);
 		component.on('logout', this.logout);
 		
-		roadtrip.routing.events.on('enter', routeData => {       
-			this.setCurrentPath(component, routeData);
-		});		
+		roadtrip.routing.events.on('enter', setCurrentPath);		
 		component.on('destroy', () => {
-			roadtrip.routing.events.removeListener('enter', this.setCurrentPath);
-			console.log('roadtrip.routing.events.removeListener - enter');
+			roadtrip.routing.events.removeListener('enter', setCurrentPath);
+			console.log('app - roadtrip.routing.events.removeListener - enter');
 		});
 	}
 }

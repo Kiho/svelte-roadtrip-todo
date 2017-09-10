@@ -1,6 +1,6 @@
 import Component from './topics.html';
 import roadtrip from 'roadtrip';
-import {allWithAsync} from '../../handlers/async';
+import { allWithMapAsync } from '../../handlers/async';
 import GenericHandler from '../../handlers/generic-handler';
 import AppChildHandler from '../app-child-handler';
 
@@ -16,8 +16,7 @@ export default class TopicsHandler extends AppChildHandler {
 	protected async getData() {
         const topics = model.getTopicsAsync();
         const tasks = model.getTasksMapAsync(topics);
-		return allWithAsync(topics, tasks)
-			.then(data => ({ topics: data[0], tasks: data[1] }));
+		return allWithMapAsync({topics, tasks});
 	}
 	
  	public activate(component) {
@@ -44,15 +43,15 @@ export default class TopicsHandler extends AppChildHandler {
 			});
 		}
 
+		const setCurrentPath = x => this.setCurrentPath(component, x);
+
 		model.on('tasks saved', recalculateTasksLeftToDoInTopic);
-		roadtrip.routing.events.on('enter', routeData => {       
-			this.setCurrentPath(component, routeData);
-		});		
+		roadtrip.routing.events.on('enter', setCurrentPath);		
 		component.on('destroy', () => {
 			model.removeListener('tasks saved', recalculateTasksLeftToDoInTopic);
 			console.log('model.removeListener - tasks saved');
-			roadtrip.routing.events.removeListener('enter', this.setCurrentPath);
-			console.log('roadtrip.routing.events.removeListener - enter');
+			roadtrip.routing.events.removeListener('enter', setCurrentPath);
+			console.log('topics roadtrip.routing.events.removeListener - enter');
 		});
 
 		topics.forEach(function(topic) {
