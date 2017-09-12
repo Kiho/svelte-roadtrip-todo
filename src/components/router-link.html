@@ -35,8 +35,7 @@
         },
         methods: {
             navigate ($e, to) {
-                if ($e && $e.preventDefault) $e.preventDefault()
-                // console.log('roadtrip.RouteData', roadtrip.RouteData);          
+                if ($e && $e.preventDefault) $e.preventDefault();         
                 if (to) {            
                     roadtrip.goto(to);
                 } else {

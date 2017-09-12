@@ -1,6 +1,5 @@
 import roadtrip from 'roadtrip';
 import BaseHandler from './base-handler';
-const model = require('../../modules/model.js');
 
 export default abstract class GenericHandler extends BaseHandler {
     constructor(path: string, ctor, public parent: GenericHandler, protected options = { data: null } ) {

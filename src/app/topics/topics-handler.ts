@@ -3,6 +3,7 @@ import roadtrip from 'roadtrip';
 import { allWithMapAsync } from '../../handlers/async';
 import GenericHandler from '../../handlers/generic-handler';
 import AppChildHandler from '../app-child-handler';
+import events from '../../events';
 
 declare var process;
 
@@ -43,15 +44,11 @@ export default class TopicsHandler extends AppChildHandler {
 			});
 		}
 
-		const setCurrentPath = x => this.setCurrentPath(component, x);
+		events.setEvent(component, x => this.setCurrentPath(component, x));
 
-		model.on('tasks saved', recalculateTasksLeftToDoInTopic);
-		roadtrip.routing.events.on('enter', setCurrentPath);		
+		model.on('tasks saved', recalculateTasksLeftToDoInTopic);		
 		component.on('destroy', () => {
 			model.removeListener('tasks saved', recalculateTasksLeftToDoInTopic);
-			console.log('model.removeListener - tasks saved');
-			roadtrip.routing.events.removeListener('enter', setCurrentPath);
-			console.log('topics roadtrip.routing.events.removeListener - enter');
 		});
 
 		topics.forEach(function(topic) {

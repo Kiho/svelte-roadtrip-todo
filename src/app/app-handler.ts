@@ -1,6 +1,7 @@
 import Component from './app.html'
 import roadtrip from 'roadtrip';
 import AppChildHandler from './app-child-handler';
+import events from '../events';
 const model = require('../../modules/model.js');
 
 export default class AppHandler extends AppChildHandler {
@@ -21,13 +22,7 @@ export default class AppHandler extends AppChildHandler {
 	}
 
 	public activate(component) {
-		const setCurrentPath = x => this.setCurrentPath(component, x);
+		events.setEvent(component, x => this.setCurrentPath(component, x));
 		component.on('logout', this.logout);
-		
-		roadtrip.routing.events.on('enter', setCurrentPath);		
-		component.on('destroy', () => {
-			roadtrip.routing.events.removeListener('enter', setCurrentPath);
-			console.log('app - roadtrip.routing.events.removeListener - enter');
-		});
 	}
 }
