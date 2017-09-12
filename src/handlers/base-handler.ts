@@ -30,6 +30,8 @@ export default abstract class BaseHandler {
     
     protected options?: IOptions;
 
+    protected isRedirecting = false;
+
     constructor(public path, private ctor, public parent: GenericHandler) {
         this.create = this.create.bind(this);
         this.destroy = this.destroy.bind(this);
@@ -61,17 +63,16 @@ export default abstract class BaseHandler {
         return false;
     }
 
-    protected destroyPrevious  = (current, previous) => {        
-        if (current && previous && previous.destroy) {                 
-            if (current.pathname.indexOf(previous.pathname ? previous.pathname : 'app') === -1 ) {
-                previous.destroy();
-            } 
-        }
-    }
+    // protected destroyPrevious  = (current, previous) => {        
+    //     if (current && previous && previous.destroy) {                 
+    //         if (current.pathname.indexOf(previous.pathname ? previous.pathname : 'app') === -1 ) {
+    //             previous.destroy();
+    //         } 
+    //     }
+    // }
 
     protected getTargetId(parent: BaseHandler, handler: BaseHandler) {
         let id = (parent ? parent.targetId + '_' : '') + handler.targetName;
-        // console.log('targetId', id, handler.path);
         return id.replace('#', '');
     }
 

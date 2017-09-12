@@ -28,11 +28,16 @@ export default abstract class GenericHandler extends BaseHandler {
 
     protected enter(current, previous) {        
         console.log('Entered!', current);
+        if (this.isRedirecting){
+            this.isRedirecting = false;            
+            console.log(`current.pathname: [${current.pathname}]`);
+            return;
+        }
         this.createParent(this); 
         this.getData().then((data) => {
             this.options.data = data;
             if (current.handler !== previous.handler) {
-                this.destroyPrevious(current, previous);
+                // this.destroyPrevious(current, previous);
                 if (this.create(this.options)){
                     this.activateOnce(this.component);
                 }
@@ -44,7 +49,7 @@ export default abstract class GenericHandler extends BaseHandler {
     }
 
     protected leave(current, previous) {
-        current.destroy = this.destroy.bind(this, this.component);
+        // current.destroy = this.destroy.bind(this, this.component);
         console.log('Left!', current);  
     }
 
@@ -78,6 +83,6 @@ export default abstract class GenericHandler extends BaseHandler {
     }
 
     public activate(component) {
-        console.warn('activate generic handler');
+        // console.warn('activate generic handler');
     }
 }
