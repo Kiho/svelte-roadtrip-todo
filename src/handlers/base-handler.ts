@@ -14,11 +14,7 @@ function instantiateWithMethods(component, options, methods) {
 }
 
 export default abstract class BaseHandler {
-    public app;
-    
     public component;
-
-    public childComponents;
 
     public element: HTMLElement;
 
@@ -62,14 +58,6 @@ export default abstract class BaseHandler {
         }
         return false;
     }
-
-    // protected destroyPrevious  = (current, previous) => {        
-    //     if (current && previous && previous.destroy) {                 
-    //         if (current.pathname.indexOf(previous.pathname ? previous.pathname : 'app') === -1 ) {
-    //             previous.destroy();
-    //         } 
-    //     }
-    // }
 
     protected getTargetId(parent: BaseHandler, handler: BaseHandler) {
         let id = (parent ? parent.targetId + '_' : '') + handler.targetName;
