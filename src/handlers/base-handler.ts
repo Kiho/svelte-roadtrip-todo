@@ -1,5 +1,6 @@
 import roadtrip from 'roadtrip';
 import GenericHandler from './generic-handler';
+import store from "../store";
 
 const model = require('../../modules/model.js');
 
@@ -52,6 +53,7 @@ export default abstract class BaseHandler {
                 this.destroyTarget(this.targetId);
             }
             options.target = this.element;
+            options.store= store;
             this.component = construct(this.ctor, options);
             this.element.id = this.targetId;                   
             return true;
@@ -95,6 +97,6 @@ export default abstract class BaseHandler {
     }
 
     protected setCurrentPath(component: Svelte, routeData) {
-        component.set({currentPath: routeData ? routeData.pathname : ''});
+        // component.set({currentPath: routeData ? routeData.pathname : ''});
     }    
 }

@@ -25,7 +25,7 @@
     "domready": "^1.0.8",
     "random-uuid-v4": "0.0.6",
     "roadtrip": "^0.5.1",
-    "svelte": "^1.30.0"
+    "svelte": "^1.46.0"
   },
   "devDependencies": {
     "@types/requirejs": "^2.1.28",

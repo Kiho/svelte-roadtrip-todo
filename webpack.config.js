@@ -3,6 +3,8 @@ var path = require('path');
 var webpack = require('webpack');
 var UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
+const isDevBuild = true;
+
 module.exports = {
   entry: './src/index.ts',
   output: {
@@ -14,7 +16,7 @@ module.exports = {
     rules: [
       {
         test: /\.html$/,
-        use: 'svelte-loader',
+        use: { loader: 'svelte-loader', options: { dev: isDevBuild, store: true } },
         exclude: ['/node_modules/', '/index.html']
       },
       { 

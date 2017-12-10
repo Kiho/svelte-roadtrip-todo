@@ -20,7 +20,7 @@ export default class TopicsHandler extends AppChildHandler {
 		return allWithMapAsync({topics, tasks});
 	}
 	
- 	public activate(component) {
+ 	public activate(component: Svelte) {
 		const self = this;
 		const { topics } = component.get();
 
@@ -44,7 +44,7 @@ export default class TopicsHandler extends AppChildHandler {
 			});
 		}
 
-		events.setEvent(component, x => this.setCurrentPath(component, x));
+		// events.setEvent(component, x => this.setCurrentPath(component, x));
 
 		model.on('tasks saved', recalculateTasksLeftToDoInTopic);		
 		component.on('destroy', () => {

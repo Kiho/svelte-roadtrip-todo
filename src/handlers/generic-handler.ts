@@ -1,5 +1,6 @@
 import roadtrip from 'roadtrip';
 import BaseHandler from './base-handler';
+import store from '../store';
 
 export default abstract class GenericHandler extends BaseHandler {
     constructor(path: string, ctor, public parent: GenericHandler, protected options = { data: null } ) {
@@ -27,6 +28,7 @@ export default abstract class GenericHandler extends BaseHandler {
 
     protected enter(current, previous) {        
         console.log('Entered!', current);
+        store.setCurrentPath('/' + current.pathname);
         if (this.isRedirecting){
             this.isRedirecting = false;            
             console.log(`current.pathname: [${current.pathname}]`);
