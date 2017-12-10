@@ -3,7 +3,6 @@ import roadtrip from 'roadtrip';
 import { allWithMapAsync } from '../../handlers/async';
 import GenericHandler from '../../handlers/generic-handler';
 import AppChildHandler from '../app-child-handler';
-import events from '../../events';
 
 declare var process;
 
@@ -43,8 +42,6 @@ export default class TopicsHandler extends AppChildHandler {
 				});
 			});
 		}
-
-		// events.setEvent(component, x => this.setCurrentPath(component, x));
 
 		model.on('tasks saved', recalculateTasksLeftToDoInTopic);		
 		component.on('destroy', () => {

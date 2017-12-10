@@ -17,6 +17,8 @@ function instantiateWithMethods(component, options, methods) {
 export default abstract class BaseHandler {
     public component;
 
+    public components: Svelte[] = [];
+
     public element: HTMLElement;
 
     protected targetName = 'uiView';
@@ -54,7 +56,7 @@ export default abstract class BaseHandler {
             }
             options.target = this.element;
             options.store= store;
-            this.component = construct(this.ctor, options);
+            this.component = construct(this.ctor, options);           
             this.element.id = this.targetId;                   
             return true;
         }
@@ -92,7 +94,7 @@ export default abstract class BaseHandler {
         return null;        
     }
 
-    protected get routeHandlers() : GenericHandler[]{
-        return roadtrip.routing.routes.handlers;
+    protected get routeHandlers() : GenericHandler[] {
+        return store.get('routes').handlers;
     }  
 }

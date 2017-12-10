@@ -38,14 +38,12 @@ export default abstract class GenericHandler extends BaseHandler {
         this.getData().then((data) => {
             this.options.data = data;
             if (current.handler !== previous.handler) {
-                // this.destroyPrevious(current, previous);
                 if (this.create(this.options)){
                     this.activateOnce(this.component);
                 }
             } else {
                 this.component.set(this.options.data);
             }
-            roadtrip.routing.events.emit('enter', current);
         });              
     }
 

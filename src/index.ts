@@ -4,8 +4,9 @@
 
 import roadtrip from 'roadtrip';
 import Routes from './routes';
+import store from './store';
 
 document.addEventListener('DOMContentLoaded', main);
 function main () {
-    roadtrip.routing.routes = new Routes('#app-root');
+    store.set({ routes: new Routes('#app-root') });
 }
