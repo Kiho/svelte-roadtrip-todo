@@ -45,12 +45,19 @@
                 }
             },
             setActivedClass(location, to) {                
-                if (roadtrip.routing.isActive(location, to)) {
+                if (this.isActive(location, to)) {
                     this.set({ active: activedClassName })
                 } else {
                     this.set({ active: '' })
                 }
-            }
+            },
+            isActive: (location, pathTo) => {
+                if (pathTo == '/') { pathTo = '/app/topics'}
+                if (pathTo.length > 1){
+                    return location.indexOf(pathTo.substring(1)) > -1;
+                }
+                return false;
+            },
         }
     }
 </script>
