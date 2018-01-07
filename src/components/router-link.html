@@ -1,12 +1,12 @@
 {{#if li}}
     <li class="{{ calssName + ' ' + active }}">
         <a href='{{basePath}}{{ to }}' on:click='navigate(event, to)'>
-            {{ yield }}
+            <slot></slot>
         </a>
     </li>
 {{else}}
     <a href='{{basePath}}{{ to }}' class="{{ calssName + ' ' + active }}" on:click='navigate(event, to)'>
-        {{ yield }}
+        <slot></slot>
     </a>
 {{/if}}
 

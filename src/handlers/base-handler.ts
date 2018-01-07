@@ -17,7 +17,7 @@ function instantiateWithMethods(component, options, methods) {
 export default abstract class BaseHandler {
     public component;
 
-    public components: Svelte[] = [];
+    // public components: Svelte[] = [];
 
     public element: HTMLElement;
 
@@ -38,7 +38,7 @@ export default abstract class BaseHandler {
     }
 
     protected isLoggedIn() {
-        const currentUser = model.getCurrentUser();             
+        const currentUser = model.getCurrentUser();      
         return (currentUser && currentUser.name);
     }
 
@@ -51,13 +51,10 @@ export default abstract class BaseHandler {
         if (!this.component) {                 
             this.targetId = this.getTargetId(this.parent, this);    
             this.element = this.findMountTo(this.parent, this.targetName);
-            if (document.getElementById(this.targetId)) {
-                this.destroyTarget(this.targetId);
-            }
+            this.destroyTarget(this.targetId);
             options.target = this.element;
             options.store= store;
-            this.component = construct(this.ctor, options);           
-            this.element.id = this.targetId;                   
+            this.component = construct(this.ctor, options);                           
             return true;
         }
         return false;
@@ -78,6 +75,7 @@ export default abstract class BaseHandler {
 
     protected destroy(handler: GenericHandler) {
         if (handler.component) {
+            // console.log('destory', handler.component);
             handler.component.destroy();
             handler.component = null;
         }
@@ -89,6 +87,7 @@ export default abstract class BaseHandler {
             if (selector) {
                 element = this.options.target.querySelector(selector);
             }
+            console.log('findElement', selector, element);
             return <HTMLElement>element;
         }
         return null;        

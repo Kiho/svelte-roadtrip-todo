@@ -17,8 +17,7 @@ export default abstract class GenericHandler extends BaseHandler {
         return null;
     }
 
-    protected beforeEnter(current, previous) {        
-        // console.log('beforeEnter', current, previous);
+    protected beforeEnter(current, previous) {
         current.handler = this;
         this.routeData = current;              
         if (!this.isLoggedIn()) {
@@ -28,7 +27,7 @@ export default abstract class GenericHandler extends BaseHandler {
 
     protected enter(current, previous) {        
         console.log('Entered!', current);
-        store.setCurrentPath('/' + current.pathname);
+        store.setCurrentPath('/' + current.pathname);       
         if (this.isRedirecting){
             this.isRedirecting = false;            
             console.log(`current.pathname: [${current.pathname}]`);
@@ -47,9 +46,8 @@ export default abstract class GenericHandler extends BaseHandler {
         });              
     }
 
-    protected leave(current, previous) {
-        // current.destroy = this.destroy.bind(this, this.component);
-        console.log('Left!', current);  
+    protected leave(current, next) {
+        console.log('Left!', current.pathname, next.pathname); 
     }
 
     get route() {
