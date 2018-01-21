@@ -1,8 +1,8 @@
 declare class Svelte {
-    constructor(options: { target: Element, data?: any });
+    constructor(options: { target: Element, data?: any, store?: any });
 
-    get(name?: string);
-    set(data: any);
+    get(name?: string): any;
+    set(data: any): void;
 
     on(
         eventName: string,
@@ -17,9 +17,16 @@ declare class Svelte {
         options?: { init?: boolean, defer?: boolean })
         : () => { cancel: () => any };
 
-    oncreate (target): void;
+    oncreate(): void;
 
-    ondestroy (): void;
-    
-    destroy (): void;
+    ondestroy(): void;
+
+    destroy(): void;
+}
+
+declare class ISvelte<T> extends Svelte {
+    get(): T;
+    get(name: string): any;
+  
+    set(data: T): void;
 }

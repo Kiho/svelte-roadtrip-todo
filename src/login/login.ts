@@ -1,0 +1,6 @@
+
+let login = {
+	data: () => ({
+		username: ''
+	})
+}

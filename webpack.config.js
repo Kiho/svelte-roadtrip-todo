@@ -1,4 +1,3 @@
-
 var path = require('path');
 var webpack = require('webpack');
 var UglifyJSPlugin = require('uglifyjs-webpack-plugin');
@@ -27,10 +26,13 @@ module.exports = {
       {
         test: /\.(png|jpg|gif|svg)$/,
         loader: 'file-loader',
-        options: {
-          name: '[name].[ext]?[hash]'
-        }
-      }
+        options: {name: '[name].[ext]?[hash]' }
+      },
+      {
+        test: /\.html$/,
+        use: { loader: 'svelte-dts-loader', options: {} },
+        exclude: ['/node_modules/', '/index.html']
+      },
     ]
   },
   resolve: {
@@ -61,20 +63,20 @@ if (process.env.NODE_ENV === 'production') {
     })
   ])
 } else {
-    module.exports.devServer = {
-        port: 8085,
-        host: "localhost",
-        historyApiFallback: true,
-        headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
-            "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
-        },
-        watchOptions: {aggregateTimeout: 300, poll: 1000},
-        contentBase: './dist',
-        open: true,
-        // proxy: {
-        //     "/api/*": "http://127.0.0.1:3001"
-        // }
-      };
+  module.exports.devServer = {
+    port: 8085,
+    host: "localhost",
+    historyApiFallback: true,
+    headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+        "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
+    },
+    watchOptions: {aggregateTimeout: 300, poll: 1000},
+    contentBase: './dist',
+    open: true,
+    // proxy: {
+    //     "/api/*": "http://127.0.0.1:3001"
+    // }
+  };
 }
