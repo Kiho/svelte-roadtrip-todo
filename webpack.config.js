@@ -21,7 +21,7 @@ module.exports = {
       { 
         test: /\.ts$/, 
         include: /src/, 
-        use: 'awesome-typescript-loader' 
+        use: 'ts-loader'
       },
       {
         test: /\.(png|jpg|gif|svg)$/,
@@ -31,7 +31,7 @@ module.exports = {
       {
         test: /\.html$/,
         use: { loader: 'svelte-dts-loader', options: {} },
-        exclude: ['/node_modules/', '/index.html']
+        include: /src/,
       },
     ]
   },
@@ -40,6 +40,15 @@ module.exports = {
   },
   performance: {
     hints: false
+  },
+  plugins: [
+    new webpack.WatchIgnorePlugin([
+      /\.js$/,
+      /\.d\.ts$/
+    ])
+  ],
+  watchOptions: {
+    ignored: /preprocessed/
   },
   devtool: '#eval-source-map'
 }
