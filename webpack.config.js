@@ -48,7 +48,7 @@ module.exports = {
     ])
   ],
   watchOptions: {
-    ignored: /preprocessed/
+    ignored: 'src/**/*.d.ts'
   },
   devtool: '#eval-source-map'
 }

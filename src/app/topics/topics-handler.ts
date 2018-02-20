@@ -1,8 +1,9 @@
-import Component from './topics.html';
+import Topics from './topics.html';
 import roadtrip from 'roadtrip';
 import { allWithMapAsync } from '../../handlers/async';
 import GenericHandler from '../../handlers/generic-handler';
 import AppChildHandler from '../app-child-handler';
+// import Topics from '../../../preprocessed/app/topics/topics.html';
 
 declare var process;
 
@@ -10,7 +11,7 @@ const model = require('../../../modules/model.js')
 
 export default class TopicsHandler extends AppChildHandler {
     constructor(path, parent) {
-		super(path, Component, parent);
+		super(path, Topics, parent);
 	}
 	
 	protected async getData() {
@@ -19,7 +20,7 @@ export default class TopicsHandler extends AppChildHandler {
 		return allWithMapAsync({topics, tasks});
 	}
 	
- 	public activate(component: Svelte) {
+ 	public activate(component: Topics) {
 		const self = this;
 		const { topics } = component.get();
 
@@ -43,7 +44,8 @@ export default class TopicsHandler extends AppChildHandler {
 			});
 		}
 
-		model.on('tasks saved', recalculateTasksLeftToDoInTopic);		
+		model.on('tasks saved', recalculateTasksLeftToDoInTopic);
+				
 		component.on('destroy', () => {
 			model.removeListener('tasks saved', recalculateTasksLeftToDoInTopic);
 		});
@@ -71,7 +73,7 @@ export default class TopicsHandler extends AppChildHandler {
 			}
 
 			component.set({
-				addingTopic: !addingTopic
+				addingTopic: !addingTopic,
 			});
 		});
 	}

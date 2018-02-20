@@ -21,7 +21,7 @@ export default class AppHandler extends AppChildHandler {
 		roadtrip.goto('/login');
 	}
 
-	public activate(component) {
+	public activate(component: Svelte) {
 		component.on('logout', this.logout);
 	}
 }

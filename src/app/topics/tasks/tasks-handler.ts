@@ -1,4 +1,4 @@
-import Component from './tasks.html';
+import Tasks from './tasks.html';
 import NoTaskSelected from './no-task-selected.html';
 import { allWithMapAsync } from '../../../handlers/async';
 import AppChildHandler from '../../app-child-handler';
@@ -24,7 +24,7 @@ export default class TasksHandler extends AppChildHandler {
                 }
             }
         }
-        super(path, Component, parent, options);
+        super(path, Tasks, parent, options);
 	}
 
     protected async getData() {
@@ -34,7 +34,7 @@ export default class TasksHandler extends AppChildHandler {
         return allWithMapAsync({topic, tasks, topicId});
     }
     
- 	public activate(component) {
+ 	public activate(component: Tasks) {
         component.on('newTaskKeyup', function(e) {
             const topicId = component.get('topicId')
             const newTaskName = component.get('newTaskName')

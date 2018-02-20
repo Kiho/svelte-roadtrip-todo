@@ -23,7 +23,7 @@ export default class LoginHandler extends GenericHandler {
         return false;
     }
 
-    public activate(component) {
+    public activate(component: Svelte) {
         this.component.on('login', this.login);
     }
 }
