@@ -69,11 +69,13 @@ export default {
 	components: {
 		NoTaskSelected
 	},
-	data: () => ({
-		newTaskName: '',
-		topic: {},
-		tasks: [],
-	}),
+	data() {
+		return {
+			newTaskName: '',
+			topic: {},
+			tasks: [],
+		};
+	},
 	helpers: {
 		ifThenStr: (test, result) => test ? result : ''
 	},

@@ -1,6 +1,8 @@
 
 let login = {
-	data: () => ({
-		username: ''
-	})
+	data() {
+		return {
+			username: ''
+		};
+	}
 }

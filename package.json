@@ -40,7 +40,7 @@
     "svelte-dts-loader": "file:../svelte-dts-loader",
     "svelte-loader": "^2.3.3",
     "ts-loader": "^3.3.0",
-    "typescript": "^2.6.2",
+    "typescript": "^2.7.2",
     "uglifyjs-webpack-plugin": "^1.1.5",
     "webpack": "^3.10.0",
     "webpack-dev-server": "^2.10.0"
