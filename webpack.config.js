@@ -1,6 +1,7 @@
 var path = require('path');
 var webpack = require('webpack');
 var UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const isDevBuild = true;
 
@@ -42,6 +43,11 @@ module.exports = {
     hints: false
   },
   plugins: [
+    new CopyWebpackPlugin([
+      { from: './index.html' },
+      { from: './styles', to: 'styles' },
+      { from: './fonts', to: 'fonts' },
+    ]),
     new webpack.WatchIgnorePlugin([
       /\.js$/,
       /\.d\.ts$/

@@ -7,7 +7,7 @@
     "clean": "rimraf src/**/*.html.d.ts",
     "del:dts": "rimraf node_modules/svelte-dts-loader",
     "refresh": "npm run del:dts && npm i",
-    "build": "webpack && copyfiles ./index.html ./dist",
+    "build": "webpack",
     "build:min": "SET NODE_ENV=production&& npm run build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "serve": "live-server --cors --port=8084 --watch=./dist/bundle.js,./index.html dist",
@@ -33,7 +33,7 @@
   "devDependencies": {
     "@types/requirejs": "^2.1.28",
     "concurrently": "^3.5.0",
-    "copyfiles": "^1.2.0",
+    "copy-webpack-plugin": "^4.4.1",
     "cross-env": "^5.0.5",
     "css-loader": "^0.28.1",
     "live-server": "^1.2.0",
