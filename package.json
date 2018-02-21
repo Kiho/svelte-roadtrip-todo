@@ -4,6 +4,7 @@
   "private": false,
   "description": "Todo-App with roadtrip, Svelte and TypeScript",
   "scripts": {
+    "clean": "rimraf src/**/*.html.d.ts",
     "del:dts": "rimraf node_modules/svelte-dts-loader",
     "refresh": "npm run del:dts && npm i",
     "build": "webpack && copyfiles ./index.html ./dist",

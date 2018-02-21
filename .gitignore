@@ -1,8 +1,8 @@
 build/
 dist/
-preprocessed/
 node_modules/
 ./vs
 ./vscode
 npm-debug.log
 npm-debug.log.*
+src/**/*.html.d.ts
