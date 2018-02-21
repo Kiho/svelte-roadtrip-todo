@@ -13,7 +13,7 @@ export default class TasksHandler extends AppChildHandler {
     constructor(path, parent) {
         const options = {
             methods: {
-                setTaskDone: function(index, done) {
+                setTaskDone: function(this: Tasks, index, done) {
                     const topicId = this.get('topicId')
                     const tasks = this.get('tasks').slice()
                     tasks[index].done = done
