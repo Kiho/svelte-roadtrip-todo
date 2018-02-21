@@ -1,7 +1,9 @@
-# roadtrip-svelte-todo
+# svelte-roadtrip-todo
 Todo-App with roadtrip, Svelte and TypeScript.
 
 This project was converted from Svelte sample found in [abstract-state-router examples](http://tehshrike.github.io/state-router-example/) to make TypeScript and [Svelte](https://svelte.technology/) working together.
+
+Genrate TypeScript definition files when build with webpack and [svelte-dts-loader](https://github.com/Kiho/svelte-dts-loader).
 
 ## How to run
     npm install
