@@ -1,4 +1,4 @@
-import Component from './login.html'
+import Login from './login.html'
 import roadtrip from 'roadtrip';
 import GenericHandler from '../handlers/generic-handler';
 
@@ -8,7 +8,7 @@ export default class LoginHandler extends GenericHandler {
     component;
 
     constructor(path, protected targetName) {
-        super(path, Component, null);
+        super(path, Login, null);
 
         this.login = this.login.bind(this);
     }
@@ -23,7 +23,7 @@ export default class LoginHandler extends GenericHandler {
         return false;
     }
 
-    public activate(component: Svelte) {
+    public activate(component: Login) {
         this.component.on('login', this.login);
     }
 }
