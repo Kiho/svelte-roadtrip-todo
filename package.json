@@ -31,18 +31,18 @@
     "svelte": "^1.53.0"
   },
   "devDependencies": {
-    "@types/requirejs": "^2.1.28",
-    "concurrently": "^3.5.0",
-    "copy-webpack-plugin": "^4.4.1",
-    "cross-env": "^5.0.5",
+    "@types/requirejs": "^2.1.31",
+    "concurrently": "^3.6.0",
+    "copy-webpack-plugin": "^4.5.2",
+    "cross-env": "^5.2.0",
     "css-loader": "^0.28.1",
     "live-server": "^1.2.0",
     "loader-utils": "^1.1.0",
-    "svelte-dts-loader": "^1.0.1",
-    "svelte-loader": "^2.3.3",
+    "svelte-dts-loader": "^1.0.2",
+    "svelte-loader": "~2.8.0",
     "ts-loader": "^3.3.0",
     "typescript": "^2.7.2",
-    "uglifyjs-webpack-plugin": "^1.1.5",
+    "uglifyjs-webpack-plugin": "^1.2.7",
     "webpack": "^3.10.0",
     "webpack-dev-server": "^2.10.0"
   }
