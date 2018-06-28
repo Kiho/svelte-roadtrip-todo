@@ -14,7 +14,7 @@ export default class LoginHandler extends GenericHandler {
     }
 
     login() {
-        const username = this.component.get('username');
+        const { username } = this.component.get();
         if (username) {
             model.saveCurrentUser(username);
             roadtrip.goto('/');

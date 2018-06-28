@@ -94,6 +94,6 @@ export default abstract class BaseHandler {
     }
 
     protected get routeHandlers() : GenericHandler[] {
-        return store.get('routes').handlers;
+        return store.get().routes.handlers;
     }  
 }

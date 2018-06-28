@@ -73,7 +73,7 @@ export default abstract class GenericHandler extends BaseHandler {
     }
     
     public activateOnce(component) {
-        if (!this.component.get('isActivated')) {
+        if (!this.component.get().isActivated) {
 			this.activate(component);
             component.set({isActivated: true});
         }

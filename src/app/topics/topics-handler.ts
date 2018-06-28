@@ -36,7 +36,7 @@ export default class TopicsHandler extends AppChildHandler {
 				}, 0);
 
 				component.set({
-					tasksUndone: Object.assign({}, component.get('tasksUndone'), {
+					tasksUndone: Object.assign({}, component.get().tasksUndone, {
 						[topicId]: leftToDo
 					})
 				});
@@ -54,14 +54,13 @@ export default class TopicsHandler extends AppChildHandler {
 		});
 		
 		component.on('add-topic', function() {
-			const addingTopic = component.get('addingTopic');
-			const newTopicName = component.get('newTopic');
+			const { addingTopic, newTopic: newTopicName } = component.get();
 
 			if (addingTopic && newTopicName) {
 				const newTopic = model.addTopic(newTopicName)
 
 				component.set({
-					topics: component.get('topics').concat(newTopic),
+					topics: component.get().topics.concat(newTopic),
 					newTopic: ''
 				});
 

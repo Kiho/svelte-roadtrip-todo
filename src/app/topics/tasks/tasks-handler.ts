@@ -14,13 +14,13 @@ export default class TasksHandler extends AppChildHandler {
         const options = {
             methods: {
                 setTaskDone: function(this: Tasks, index, done) {
-                    const topicId = this.get('topicId')
-                    const tasks = this.get('tasks').slice()
-                    tasks[index].done = done
+                    const { topicId, tasks } = this.get();
+                    const taskList = tasks.slice();
+                    taskList[index].done = done
 
-                    this.set({ tasks })
+                    this.set({ tasks: taskList });
 
-                    model.saveTasks(topicId, tasks)
+                    model.saveTasks(topicId, taskList)
                 }
             }
         }
@@ -36,8 +36,7 @@ export default class TasksHandler extends AppChildHandler {
     
  	public activate(component: Tasks) {
         component.on('newTaskKeyup', function(e) {
-            const topicId = component.get('topicId')
-            const newTaskName = component.get('newTaskName')
+            const { topicId, newTaskName } = component.get()
             if (e.keyCode === 13 && newTaskName) {
                 createNewTask(topicId, newTaskName)
                 component.set({
@@ -47,8 +46,8 @@ export default class TasksHandler extends AppChildHandler {
         });
 
         component.on('remove', function(taskIndex) {
-            const topicId = component.get('topicId')
-            let tasksWithIndexElementRemoved = component.get('tasks').slice()
+            const { topicId, tasks } = this.get()
+            let tasksWithIndexElementRemoved = tasks.slice()
 
             tasksWithIndexElementRemoved.splice(taskIndex, 1)
             console.log('tasksWithIndexElementRemoved', topicId, tasksWithIndexElementRemoved)
@@ -62,7 +61,7 @@ export default class TasksHandler extends AppChildHandler {
 
         function createNewTask(topicId, taskName) {
             const task = model.saveTask(topicId, taskName)
-            const newTasks = component.get('tasks').concat(task)
+            const newTasks = component.get().tasks.concat(task)
             component.set({
                 tasks: newTasks
             });

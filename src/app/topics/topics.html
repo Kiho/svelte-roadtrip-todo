@@ -2,11 +2,11 @@
 	<div class="row">
 		<div class="col-sm-4">
 			<div class="list-group">
-				{{#each topics as topic}}
-					<RouterLink to={{ "/app/topics/" + topic.id }} location={{$currentPath}} calssName="list-group-item" >
-						{{topic.name}} <span class="badge">{{ showNumber(tasksUndone[topic.id]) }}</span>
+				{#each topics as topic}
+					<RouterLink to={ "/app/topics/" + topic.id } location={$currentPath} calssName="list-group-item" >
+						{topic.name} <span class="badge">{ showNumber(tasksUndone[topic.id]) }</span>
 					</RouterLink>
-				{{/each}}
+				{/each}
 			</div>
 			<form action="" onsubmit="return false" on:submit="fire('add-topic', event)">
 				<div class="table">
@@ -15,7 +15,7 @@
 							<div class="table-cell">
 								<input
 									type="text"
-									class="new-topic-name form-control {{hiddenIfNot(addingTopic)}}"
+									class="new-topic-name form-control {hiddenIfNot(addingTopic)}"
 									placeholder="Topic name"
 									bind:value="newTopic"
 								>

@@ -1,14 +1,14 @@
-{{#if li}}
-    <li class="{{ calssName + ' ' + active }}">
-        <a href='{{basePath}}{{ to }}' on:click='navigate(event, to)'>
+{#if li}
+    <li class="{ calssName + ' ' + active }">
+        <a href='{basePath}{ to }' on:click='navigate(event, to)'>
             <slot></slot>
         </a>
     </li>
-{{else}}
-    <a href='{{basePath}}{{ to }}' class="{{ calssName + ' ' + active }}" on:click='navigate(event, to)'>
+{:else}
+    <a href='{basePath}{ to }' class="{ calssName + ' ' + active }" on:click='navigate(event, to)'>
         <slot></slot>
     </a>
-{{/if}}
+{/if}
 
 <script>
     import roadtrip from 'roadtrip';
@@ -27,7 +27,7 @@
             }
         },
         oncreate () {               
-            const to = this.get('to'); 
+            const { to } = this.get(); 
             this.observe('location', location => {
                 // console.log(location, to);
                 this.setActivedClass(location, to);
