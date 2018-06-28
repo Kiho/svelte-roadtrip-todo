@@ -72,6 +72,10 @@ export default abstract class GenericHandler extends BaseHandler {
         }       
     }
     
+    public setAsChild(component) { 
+        this.component.set({ uiView: component });
+    }
+
     public activateOnce(component) {
         if (!this.component.get().isActivated) {
 			this.activate(component);

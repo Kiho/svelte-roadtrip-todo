@@ -30,6 +30,7 @@ export default abstract class BaseHandler {
     protected options?: IOptions;
 
     protected isRedirecting = false;
+    protected isCreated = false;
 
     constructor(public path, private ctor, public parent: GenericHandler) {
         this.create = this.create.bind(this);
@@ -48,13 +49,15 @@ export default abstract class BaseHandler {
     }
 
     public create(options) {
-        if (!this.component) {                 
-            this.targetId = this.getTargetId(this.parent, this);    
-            this.element = this.findMountTo(this.parent, this.targetName);
-            this.destroyTarget(this.targetId);
-            options.target = this.element;
-            options.store= store;
-            this.component = construct(this.ctor, options);                           
+        if (!this.isCreated) {                 
+            // this.targetId = this.getTargetId(this.parent, this);    
+            // this.element = this.findMountTo(this.parent, this.targetName);
+            // this.destroyTarget(this.targetId);
+            // options.target = this.element;
+            // options.store = store;
+            // this.component = construct(this.ctor, options);
+            this.parent.setAsChild(this.ctor); 
+            this.isCreated = true;                       
             return true;
         }
         return false;

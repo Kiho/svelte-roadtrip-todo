@@ -29,7 +29,8 @@
 			</form>
 		</div>
 		<div class="col-sm-8">
-			<uiView></uiView>
+			<svelte:component this="{uiView}" name="uiView"/>
+			<!-- <uiView></uiView> -->
 		</div>
 	</div>
 </div>
@@ -43,6 +44,7 @@
 		},
 		data() {
 			return {
+				uiView: null,
 				topics: [],
 				tasksUndone: {},
 				addingTopic: false,
