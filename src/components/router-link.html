@@ -26,12 +26,10 @@
               li: false,
             }
         },
-        oncreate () {               
-            const { to } = this.get(); 
-            this.observe('location', location => {
-                // console.log(location, to);
-                this.setActivedClass(location, to);
-            });
+        onstate({changed, current}){
+            if (changed.location) {
+                this.setActivedClass(current.location, current.to);
+            }            
         },
         methods: {
             navigate ($e, to) {
