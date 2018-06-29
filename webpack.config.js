@@ -3,9 +3,11 @@ var webpack = require('webpack');
 var UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 
-const isDevBuild = true;
+const mode = process.env.NODE_ENV || 'development';
+const isDevBuild = mode === 'development'
 
 module.exports = {
+  mode,
   entry: './src/index.ts',
   output: {
     path: path.resolve(__dirname, './dist'),
@@ -59,7 +61,7 @@ module.exports = {
   devtool: '#eval-source-map'
 }
 
-if (process.env.NODE_ENV === 'production') {
+if (!isDevBuild) {
   module.exports.devtool = '#source-map'
   module.exports.plugins = (module.exports.plugins || []).concat([
     new webpack.DefinePlugin({
