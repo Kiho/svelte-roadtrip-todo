@@ -32,7 +32,7 @@ export default abstract class BaseHandler {
     protected isRedirecting = false;
     protected isCreated = false;
 
-    constructor(public path, private ctor, public parent: GenericHandler) {
+    constructor(public path, protected ctor, public parent: GenericHandler) {
         this.create = this.create.bind(this);
         this.destroy = this.destroy.bind(this);
         this.findElement = this.findElement.bind(this);
@@ -49,14 +49,23 @@ export default abstract class BaseHandler {
     }
 
     public create(options) {
-        if (!this.isCreated) {                 
+        if (!this.parent) {
+            this.targetId = this.getTargetId(this.parent, this);
+            this.element = this.findMountTo(this.parent, this.targetName);
+            this.destroyTarget(this.targetId);
+            options.target = this.element;
+            options.store = store;
+            this.component = construct(this.ctor, options);
+            this.isCreated = true;
+            return true;
+        } else if (!this.isCreated) {                 
             // this.targetId = this.getTargetId(this.parent, this);    
             // this.element = this.findMountTo(this.parent, this.targetName);
             // this.destroyTarget(this.targetId);
             // options.target = this.element;
             // options.store = store;
             // this.component = construct(this.ctor, options);
-            this.parent.setAsChild(this.ctor); 
+            this.parent.setAsChild(this); 
             this.isCreated = true;                       
             return true;
         }

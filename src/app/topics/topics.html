@@ -45,12 +45,17 @@
 		data() {
 			return {
 				uiView: null,
+				handler: null,
 				topics: [],
 				tasksUndone: {},
 				addingTopic: false,
 				newTopic: '',
 				currentPath: ''
 			}
+		},
+		oncreate() {
+			this.set(this.store.get().routeData);
+			this.constructor.component = this;
 		},
 		helpers: {
 			hiddenIfNot: x => x ? '' : 'hidden',

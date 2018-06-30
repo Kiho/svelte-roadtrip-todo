@@ -3,7 +3,7 @@ import BaseHandler from './base-handler';
 import store from '../store';
 
 export default abstract class GenericHandler extends BaseHandler {
-    constructor(path: string, ctor, public parent: GenericHandler, protected options = { data: null } ) {
+    constructor(path: string, ctor, public parent: GenericHandler, protected options = { data: null, store } ) {
         super(path, ctor, parent);
         
         this.beforeEnter = this.beforeEnter.bind(this);
@@ -35,13 +35,15 @@ export default abstract class GenericHandler extends BaseHandler {
         }
         this.createParent(this); 
         this.getData().then((data) => {
-            this.options.data = data;
+            // this.options.data = data;
+            store.set({ routeData: data });
             if (current.handler !== previous.handler) {
                 if (this.create(this.options)){
                     this.activateOnce(this.component);
                 }
             } else {
-                this.component.set(this.options.data);
+                // this.component.set(this.options.data);
+                this.parent.setAsChild(this);
             }
         });              
     }
@@ -59,12 +61,13 @@ export default abstract class GenericHandler extends BaseHandler {
     }
 
     protected createParent(self) {
+        console.log('createParent!', self.path, this);
 		if (this.parent && !this.parent.component) {
 			this.parent.createParent(self);
         }        
         if (self !== this) {
             this.getData().then((data) => {
-                    this.options.data = data;                    
+                    store.set({ routeData: data });                  
                     this.create(this.options);
                     this.activateOnce(this.component);
                 }               
@@ -72,11 +75,23 @@ export default abstract class GenericHandler extends BaseHandler {
         }       
     }
     
-    public setAsChild(component) { 
-        this.component.set({ uiView: component });
+    public setAsChild(handler) {
+        console.log('setAsChild!', this);
+        if (this.component) {
+            store.set({ routeHandler: handler });
+            this.component.set({ uiView: handler.ctor });
+        }
     }
 
     public activateOnce(component) {
+        console.log('activateOnce!', component, this);
+        if (!this.component) {
+            this.parent.setAsChild(this);
+            component = this.ctor.component;
+            this.activate(component);
+            component.set({isActivated: true});
+            return;
+        }
         if (!this.component.get().isActivated) {
 			this.activate(component);
             component.set({isActivated: true});

@@ -77,6 +77,10 @@ export default {
 			tasks: [],
 		};
 	},
+	oncreate() {
+		this.set(this.store.get().routeData);
+		this.constructor.component = this;
+	},
 	helpers: {
 		ifThenStr: (test, result) => test ? result : ''
 	},
