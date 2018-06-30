@@ -11,20 +11,7 @@ const model = require('../../../../modules/model.js');
 export default class TasksHandler extends AppChildHandler {
 
     constructor(path, parent) {
-        const options = {
-            methods: {
-                setTaskDone: function(this: Tasks, index, done) {
-                    const { topicId, tasks } = this.get();
-                    const taskList = tasks.slice();
-                    taskList[index].done = done
-
-                    this.set({ tasks: taskList });
-
-                    model.saveTasks(topicId, taskList)
-                }
-            }
-        }
-        super(path, Tasks, parent, options);
+        super(path, Tasks, parent);
 	}
 
     protected async getData() {
@@ -58,6 +45,20 @@ export default class TasksHandler extends AppChildHandler {
 
             model.saveTasks(topicId, tasksWithIndexElementRemoved)
         });
+
+        component.on('setTaskDone', ({taskIndex, done}) => {
+            setTaskDone(taskIndex, done);
+        });
+
+        function setTaskDone (index, done) {
+            const { topicId, tasks } = component.get();
+            const taskList = tasks.slice();
+            taskList[index].done = done
+
+            component.set({ tasks: taskList });
+
+            model.saveTasks(topicId, taskList)
+        }
 
         function createNewTask(topicId, taskName) {
             const task = model.saveTask(topicId, taskName)

@@ -85,6 +85,12 @@ export default abstract class BaseHandler {
         });
     }
 
+    protected destroyAll() {        
+        this.routeHandlers.forEach(h => {
+            this.destroy(h);
+        });
+    }
+
     protected destroy(handler: GenericHandler) {
         if (handler.component) {
             // console.log('destory', handler.component);

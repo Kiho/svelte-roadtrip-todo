@@ -86,10 +86,10 @@ export default {
 	},
 	methods: {
 		complete(taskIndex) {
-			this.setTaskDone(taskIndex, true)
+			this.fire('setTaskDone', { taskIndex, done: true });
 		},
 		restore(taskIndex) {
-			this.setTaskDone(taskIndex, false)
+			this.fire('setTaskDone', { taskIndex, done: false });
 		}
 	}
 }
