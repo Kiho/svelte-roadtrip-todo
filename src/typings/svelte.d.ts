@@ -1,11 +1,10 @@
 declare class Svelte {
     constructor(options: { target: Element, data?: any, store?: any });
 
-    get(name?: string): any;
+    get(): any;
     set(data: any): void;
 
-    on(
-        eventName: string,
+    on(eventName: string,
         callback?: (event?: any) => any)
         : () => { cancel: () => any };
 

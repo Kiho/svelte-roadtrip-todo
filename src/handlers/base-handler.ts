@@ -15,7 +15,7 @@ function instantiateWithMethods(component, options, methods) {
 }
 
 export default abstract class BaseHandler {
-    public component;
+    public component: Svelte;
 
     // public components: Svelte[] = [];
 
@@ -111,6 +111,18 @@ export default abstract class BaseHandler {
             }
             console.log('findElement', selector, element);
             return <HTMLElement>element;
+        }
+        return null;        
+    }
+
+    public findElementInTarget(selector?) {
+        if (this.component) {
+            let element: HTMLElement = this.component.get().element;
+            if (selector) {
+                element = element.querySelector(selector);
+            }
+            console.log('findElementInTarget', selector, element);
+            return element;
         }
         return null;        
     }

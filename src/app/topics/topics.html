@@ -55,8 +55,7 @@
 		},
 		oncreate() {
 			this.set(this.store.get().routeData);
-			const element = this.refs.container;
-			this.set({element});
+			this.set({element: this.refs.container});
 			this.constructor.component = this;
 		},
 		helpers: {

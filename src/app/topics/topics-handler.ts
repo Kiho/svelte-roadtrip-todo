@@ -25,7 +25,7 @@ export default class TopicsHandler extends AppChildHandler {
 
 		function setFocusOnAddTopicEdit() {
 			process.nextTick(function() {
-				self.findElement('.new-topic-name').focus();
+				self.findElementInTarget('.new-topic-name').focus();
 			});
 		}
 

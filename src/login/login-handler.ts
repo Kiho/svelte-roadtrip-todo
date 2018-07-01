@@ -5,7 +5,7 @@ import GenericHandler from '../handlers/generic-handler';
 const model = require('../../modules/model.js');
 
 export default class LoginHandler extends GenericHandler {
-    component;
+    component: Login;
 
     constructor(path, protected targetName) {
         super(path, Login, null);

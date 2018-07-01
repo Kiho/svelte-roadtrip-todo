@@ -35,6 +35,10 @@
 				uiView: null,
 			}
 		},
+		oncreate() {
+			this.set(this.store.get().routeData);
+			this.constructor.component = this;
+		},
         components: {
             RouterLink
         },
