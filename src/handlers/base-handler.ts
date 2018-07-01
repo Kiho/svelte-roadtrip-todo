@@ -68,7 +68,10 @@ export default abstract class BaseHandler {
             this.parent.setAsChild(this); 
             this.isCreated = true;                       
             return true;
-        }
+        } 
+        // else {
+        //     this.parent.setAsChild(this); 
+        // }
         return false;
     }
 
@@ -96,6 +99,7 @@ export default abstract class BaseHandler {
             // console.log('destory', handler.component);
             handler.component.destroy();
             handler.component = null;
+            handler.isCreated = false;
         }
     }
 

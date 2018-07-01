@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-default" ref:container>
 	<div class="container-fluid">
 		<div class="navbar-header">
 			<ul class="nav navbar-nav">
@@ -21,8 +21,7 @@
 	</div>
 </nav>
 
-<svelte:component this="{uiView}" name="uiView" ref:uiView/>
-<!-- <uiView></uiView> -->
+<svelte:component this="{uiView}" name="uiView"/>
 
 <script type="text/javascript">
 	import RouterLink from '../components/router-link.html';

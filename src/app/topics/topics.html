@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" ref:container>
 	<div class="row">
 		<div class="col-sm-4">
 			<div class="list-group">
@@ -29,8 +29,7 @@
 			</form>
 		</div>
 		<div class="col-sm-8">
-			<svelte:component this="{uiView}" name="uiView" ref:uiView/>
-			<!-- <uiView></uiView> -->
+			<svelte:component this="{uiView}" name="uiView"/>
 		</div>
 	</div>
 </div>
@@ -44,6 +43,7 @@
 		},
 		data() {
 			return {
+				element: null,
 				uiView: null,
 				handler: null,
 				topics: [],
@@ -55,6 +55,8 @@
 		},
 		oncreate() {
 			this.set(this.store.get().routeData);
+			const element = this.refs.container;
+			this.set({element});
 			this.constructor.component = this;
 		},
 		helpers: {

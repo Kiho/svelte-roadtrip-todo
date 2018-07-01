@@ -33,11 +33,11 @@ export default abstract class GenericHandler extends BaseHandler {
         const p = previous.pathname.split('/');
         const position = c.length - 1;
         if (p.length >= c.length && c[position] != p[position]) {
-            if (current.handler.component) {
-                // this.destroy(current.handler);
+            if (c.length == 2 && current.handler.parent) {
+                this.destroyAll();
             }
             if (c.length == 1 && !current.handler.parent && previous.handler.component) {
-                // this.destroyAll();
+                this.destroyAll();
             }
         }
     }
@@ -45,8 +45,8 @@ export default abstract class GenericHandler extends BaseHandler {
     protected enter(current, previous) {        
         console.log('Entered!', current);
         store.setCurrentPath('/' + current.pathname);       
-        if (this.isRedirecting) {
-            this.isRedirecting = false;         
+        if (this.isRedirecting){
+            this.isRedirecting = false;            
             console.log(`current.pathname: [${current.pathname}]`);
             return;
         }
@@ -78,13 +78,12 @@ export default abstract class GenericHandler extends BaseHandler {
 
     protected createParent(self) {
         console.log('createParent!', self.path, this);
-		if (this.parent) { // && !this.parent.component
+		if (this.parent && !this.parent.component) {
 			this.parent.createParent(self);
         }        
         if (self !== this) {
             this.getData().then((data) => {
-                    this.options.data = data;
-                    store.set({ routeData: data });         
+                    store.set({ routeData: data });                  
                     this.create(this.options);
                     this.activateOnce(this.component);
                 }               
