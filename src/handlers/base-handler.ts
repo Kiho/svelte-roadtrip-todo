@@ -58,20 +58,14 @@ export default abstract class BaseHandler {
             this.component = construct(this.ctor, options);
             this.isCreated = true;
             return true;
-        } else if (!this.isCreated) {                 
-            // this.targetId = this.getTargetId(this.parent, this);    
-            // this.element = this.findMountTo(this.parent, this.targetName);
-            // this.destroyTarget(this.targetId);
-            // options.target = this.element;
-            // options.store = store;
-            // this.component = construct(this.ctor, options);
+        } else if (!this.isCreated) {
             this.parent.setAsChild(this); 
             this.isCreated = true;                       
             return true;
         } 
-        // else {
-        //     this.parent.setAsChild(this); 
-        // }
+        else {
+            this.parent.setAsChild(this); 
+        }
         return false;
     }
 
@@ -97,7 +91,9 @@ export default abstract class BaseHandler {
     protected destroy(handler: GenericHandler) {
         if (handler.component) {
             // console.log('destory', handler.component);
-            handler.component.destroy();
+            if (!handler.parent) {
+                handler.component.destroy();
+            }            
             handler.component = null;
             handler.isCreated = false;
         }

@@ -1,5 +1,5 @@
 # svelte-roadtrip-todo
-Todo-App with roadtrip, Svelte and TypeScript.
+Todo-App experimental project with roadtrip, Svelte and TypeScript.
 
 This project was converted from Svelte sample found in [abstract-state-router examples](http://tehshrike.github.io/state-router-example/) to make TypeScript and [Svelte](https://svelte.technology/) working together.
 

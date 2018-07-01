@@ -93,10 +93,7 @@ export default abstract class GenericHandler extends BaseHandler {
     
     public setAsChild(handler) {
         console.log('setAsChild!', this);
-        if (this.component) {
-            store.set({ routeHandler: handler });
-            this.component.set({ uiView: handler.ctor });
-        }
+        this.component.set({ uiView: handler.ctor });
     }
 
     public activateOnce(component) {
