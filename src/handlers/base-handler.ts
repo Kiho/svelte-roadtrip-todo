@@ -15,6 +15,7 @@ function instantiateWithMethods(component, options, methods) {
 
 export default abstract class BaseHandler {
     public component: Svelte;
+    public children: BaseHandler[] = [];
 
     public element: HTMLElement;
     protected targetId: string;
@@ -26,6 +27,9 @@ export default abstract class BaseHandler {
     constructor(public path, protected ctor, public parent: GenericHandler) {
         this.create = this.create.bind(this);
         this.destroy = this.destroy.bind(this);
+        if (parent) {
+            parent.children.push(this);
+        }        
     }
 
     protected isLoggedIn() {
@@ -37,7 +41,6 @@ export default abstract class BaseHandler {
         if (!this.parent) {
             this.element = document.querySelector(`#${this.targetId}`);
             this.destroyAll();
-
             options.target = this.element;
             options.store = store;
             this.component = construct(this.ctor, options);

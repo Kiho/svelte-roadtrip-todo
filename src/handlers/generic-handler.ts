@@ -20,26 +20,24 @@ export default abstract class GenericHandler extends BaseHandler {
     protected beforeEnter(current, previous) {
         current.handler = this;
         this.routeData = current;
-        if (previous && previous.pathname)   {
-            this.destoryPrevious(current, previous);
-        }           
+        if (previous.handler && previous.handler.parent && current.handler.parent) {
+            if (current.handler.parent.path != previous.handler.parent.path) {
+                this.destroyChildren(current.handler.parent); 
+            }
+        }          
         if (!this.isLoggedIn()) {
             roadtrip.goto('/login');
         }
     }
 
-    protected destoryPrevious(current, previous) {
-        const c = current.pathname.split('/');
-        const p = previous.pathname.split('/');
-        const position = c.length - 1;
-        if (p.length >= c.length && c[position] != p[position]) {
-            if (c.length == 2 && current.handler.parent) {
-                this.destroyAll();
-            }
-            if (c.length == 1 && !current.handler.parent && previous.handler.component) {
-                this.destroyAll();
-            }
-        }
+    protected destroyChildren(handler) {
+        if (handler) {
+            console.log('destroyChildren - ', `[handler, ${handler.path}]`);       
+            handler.children.forEach(h => {
+                this.destroy(h);
+                this.destroyChildren(h);
+            });
+        }        
     }
 
     protected enter(current, previous) {        
@@ -47,7 +45,7 @@ export default abstract class GenericHandler extends BaseHandler {
         store.setCurrentPath('/' + current.pathname);       
         if (this.isRedirecting){
             this.isRedirecting = false;            
-            console.log(`current.pathname: [${current.pathname}]`);
+            // console.log(`isRedirecting - current.pathname: [${current.pathname}]`);
             return;
         }
         this.createParent(this); 
@@ -92,8 +90,10 @@ export default abstract class GenericHandler extends BaseHandler {
     }
     
     public setAsChild(handler) {
-        console.log('setAsChild!', this);
-        this.component.set({ uiView: handler.ctor });
+        if (this.component.get().uiView !== handler.ctor) {
+            console.log('setAsChild!', this);
+            this.component.set({ uiView: handler.ctor });
+        }        
     }
 
     public activateOnce(component) {
@@ -101,17 +101,17 @@ export default abstract class GenericHandler extends BaseHandler {
         if (!this.component) {
             this.parent.setAsChild(this);
             this.component = this.ctor.component;
-            if (this.component){                
+            if (this.component) {                
                 this.activate(this.component);
-                this.component.set({isActivated: true});
+                this.component.set({ isActivated: true });
             } else {
-                console.warn('No oncreate handler', this);
+                // console.warn('No oncreate handler', this);
             }
             return;
         }
         if (!this.component.get().isActivated) {
 			this.activate(component);
-            component.set({isActivated: true});
+            component.set({ isActivated: true });
         }
     }
 
