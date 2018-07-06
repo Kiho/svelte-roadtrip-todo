@@ -15,7 +15,7 @@ export default class TasksHandler extends AppChildHandler {
 	}
 
     protected async getData() {
-        const topicId = this.routeData.params.topicId;
+        const topicId = this.routeHandler.params.topicId;
         const topic = model.getTopicAsync(topicId);
         const tasks = model.getTasksAsync(topicId);
         return allWithMapAsync({topic, tasks, topicId});

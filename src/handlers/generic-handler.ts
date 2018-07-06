@@ -19,11 +19,9 @@ export default abstract class GenericHandler extends BaseHandler {
 
     protected beforeEnter(current, previous) {
         current.handler = this;
-        this.routeData = current;
-        if (previous.handler && previous.handler.parent && current.handler.parent) {
-            if (current.handler.parent.path != previous.handler.parent.path) {
-                this.destroyChildren(current.handler.parent); 
-            }
+        this.routeHandler = current;
+        if (previous.handler && previous.handler.parent !== this.parent) {
+            this.destroyChildren(this.parent);
         }          
         if (!this.isLoggedIn()) {
             roadtrip.goto('/login');
@@ -32,7 +30,7 @@ export default abstract class GenericHandler extends BaseHandler {
 
     protected destroyChildren(handler) {
         if (handler) {
-            console.log('destroyChildren - ', `[handler, ${handler.path}]`);       
+            // console.log('destroyChildren - ', `[handler, ${handler.path}]`);       
             handler.children.forEach(h => {
                 this.destroy(h);
                 this.destroyChildren(h);

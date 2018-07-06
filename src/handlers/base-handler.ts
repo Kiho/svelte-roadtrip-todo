@@ -19,7 +19,7 @@ export default abstract class BaseHandler {
 
     public element: HTMLElement;
     protected targetId: string;
-    protected routeData;
+    protected routeHandler;
     protected options?: IOptions;
     protected isRedirecting = false;
     protected isCreated = false;
