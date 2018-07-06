@@ -5,10 +5,10 @@ import AppChildHandler from './app-child-handler';
 const model = require('../../modules/model.js');
 
 export default class AppHandler extends AppChildHandler {
-    constructor(path, target) {
+    constructor(path, targetId) {
 		super(path, App, null);
 
-		this.targetName = target;
+		this.targetId = targetId;
 		this.logout = this.logout.bind(this);
 	}
 	

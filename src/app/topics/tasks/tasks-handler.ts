@@ -68,7 +68,7 @@ export default class TasksHandler extends AppChildHandler {
             });
         }
 
-        const el = this.findElement('.add-new-task');
+        const el = this.findElementInTarget('.add-new-task');
         if (el) { 
             el.focus();
         }

@@ -8,5 +8,5 @@ import store from './store';
 
 document.addEventListener('DOMContentLoaded', main);
 function main () {
-    store.set({ routes: new Routes('#app-root') });
+    store.set({ routes: new Routes('app-root') });
 }

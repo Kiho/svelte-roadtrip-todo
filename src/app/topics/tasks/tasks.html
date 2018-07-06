@@ -1,6 +1,6 @@
 {#if topic}
 <h1>{topic.name}</h1>
-<table class="table table-striped">
+<table class="table table-striped" ref:container>
 	<thead>
 		<tr>
 			<th>
@@ -80,6 +80,7 @@ export default {
 	},
 	oncreate() {
 		this.set(this.store.get().routeData);
+		this.set({element: this.refs.container});
 		this.constructor.component = this;
 	},
 	helpers: {
