@@ -29,7 +29,7 @@
 			</form>
 		</div>
 		<div class="col-sm-8">
-			<svelte:component this="{uiView}" name="uiView"/>
+			<svelte:component this="{uiView}" name="uiView" ref:uiView/>
 		</div>
 	</div>
 </div>
@@ -51,11 +51,6 @@
 				newTopic: '',
 				currentPath: ''
 			}
-		},
-		oncreate() {
-			this.set(this.store.get().routeData);
-			this.set({element: this.refs.container});
-			this.constructor.component = this;
 		},
 		helpers: {
 			hiddenIfNot: x => x ? '' : 'hidden',

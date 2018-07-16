@@ -76,7 +76,7 @@ export default abstract class BaseHandler {
 
     public findElementInTarget(selector?) {
         if (this.component) {
-            let element: HTMLElement = this.component.get().element;
+            let element: HTMLElement = this.component.refs.container;
             if (selector && element) {
                 element = element.querySelector(selector);
             }

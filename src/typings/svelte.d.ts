@@ -15,6 +15,12 @@ declare class Svelte {
     ondestroy(): void;
 
     destroy(): void;
+
+    refs?: RefCollection;
+}
+
+interface RefCollection {
+    [name: string]: any;
 }
 
 declare class ISvelte<T> extends Svelte {

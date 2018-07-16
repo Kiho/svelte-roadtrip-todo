@@ -21,7 +21,7 @@
 	</div>
 </nav>
 
-<svelte:component this="{uiView}" name="uiView"/>
+<svelte:component this="{uiView}" name="uiView" ref:uiView />
 
 <script type="text/javascript">
 	import RouterLink from '../components/router-link.html';
@@ -33,10 +33,6 @@
 				currentUser: {},
 				uiView: null,
 			}
-		},
-		oncreate() {
-			this.set(this.store.get().routeData);
-			this.constructor.component = this;
 		},
         components: {
             RouterLink

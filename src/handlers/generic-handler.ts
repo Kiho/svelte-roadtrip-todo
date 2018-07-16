@@ -49,7 +49,6 @@ export default abstract class GenericHandler extends BaseHandler {
         this.createParent(this); 
         this.getData().then((data) => {
             this.options.data = data;
-            store.set({ routeData: data });
             if (current.handler !== previous.handler) {
                 if (this.create(this.options)){
                     this.activateOnce(this.component);
@@ -79,7 +78,7 @@ export default abstract class GenericHandler extends BaseHandler {
         }        
         if (self !== this) {
             this.getData().then((data) => {
-                    store.set({ routeData: data });                  
+                    this.options.data = data;                                     
                     this.create(this.options);
                     this.activateOnce(this.component);
                 }               
@@ -95,11 +94,13 @@ export default abstract class GenericHandler extends BaseHandler {
     }
 
     public activateOnce(component) {
-        console.log('activateOnce!', component, this);
+        // console.log('activateOnce!', component, this);
         if (!this.component) {
             this.parent.setAsChild(this);
-            this.component = this.ctor.component;
-            if (this.component) {                
+            this.component = this.parent.component.refs.uiView;
+            if (this.component) {
+                this.component.set(this.options.data);
+                // console.log('activateOnce!: this.component.refs', this.component);               
                 this.activate(this.component);
                 this.component.set({ isActivated: true });
             } else {
